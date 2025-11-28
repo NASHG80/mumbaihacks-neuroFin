@@ -1,0 +1,49 @@
+@import "tailwindcss";
+@import "tailwindcss";
+
+@layer utilities {
+  /* --- 1. Hiding Scrollbar Utility --- */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  /* --- 2. Premium Glass Scrollbar --- */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 5px; /* Very thin width */
+    height: 5px; /* Very thin height for horizontal scrolls */
+  }
+
+  /* The Track (Background) - Totally transparent */
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 4px 0; /* Tiny margin top/bottom */
+  }
+
+  /* The Thumb (Handle) - Glassy Look */
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1); /* Low opacity white */
+    border-radius: 100vh; /* Fully rounded pill shape */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05); /* Subtle border */
+  }
+
+  /* Hover State - Brighter */
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3); /* Brighter on hover */
+    cursor: pointer;
+  }
+
+  /* Active/Click State - Even Brighter */
+  .custom-scrollbar::-webkit-scrollbar-thumb:active {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}

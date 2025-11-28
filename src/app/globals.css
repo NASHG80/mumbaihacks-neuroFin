@@ -1,0 +1,292 @@
+@import "tailwindcss";
+
+/* ------------ GLOBAL RESET ------------ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  scroll-behavior: smooth;
+  background-color: #000;
+  color: #fff;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Remove blue highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ------------ SMOOTH FADES & ANIMATIONS ------------ */
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Slight upward entrance */
+.fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.9s ease;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Slow fade used in hero text */
+.slow-fade {
+  opacity: 0;
+  transition: opacity 1.2s ease-out;
+}
+
+.slow-fade.visible {
+  opacity: 1;
+}
+
+/* ------------ PARALLAX SUPPORT ------------ */
+.parallax {
+  will-change: transform;
+  transition: transform 0.2s ease-out;
+}
+
+/* ------------ BLUR GRADIENTS (from HTML effects) ------------ */
+.blur-gradient-1 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: rgba(139, 92, 246, 0.25);
+  filter: blur(180px);
+  border-radius: 9999px;
+  z-index: -1;
+}
+
+.blur-gradient-2 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: rgba(99, 102, 241, 0.25);
+  filter: blur(180px);
+  border-radius: 9999px;
+  z-index: -1;
+}
+
+/* ------------ BUTTON HOVER EFFECTS ------------ */
+.button-glow {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.button-glow:hover {
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.7),
+    0 0 40px rgba(99, 102, 241, 0.5);
+  transform: translateY(-2px);
+}
+
+/* ------------ CUSTOM SCROLLBAR ------------ */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Premium Login Button Wrapper */
+#login-premium {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  color: white !important; /* ← Prevent GSAP conflict */
+}
+
+/* Shine bar */
+#login-premium .shine {
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 70%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255,255,255,0.40) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+
+/* Trigger Shine Sweep */
+#login-premium:hover .shine {
+  animation: shineSweep 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes shineSweep {
+  0% { left: -120%; }
+  100% { left: 120%; }
+}
+
+/* Soft hover background using Tailwind layers */
+#login-premium .hover-bg {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+#login-premium:hover .hover-bg {
+  opacity: 1;
+}
+
+.shine {
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255,255,255,0.5) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+
+#login-premium:hover .shine,
+#signup-ultra:hover .shine {
+  animation: shineSweep 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes shineSweep {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+
+/* Add to src/app/globals.css if not present */
+
+@keyframes shineSweep {
+  0% { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(200%) skewX(-12deg); }
+}
+
+/* Smooth scrollbar for dashboard panels */
+.nf-panel::-webkit-scrollbar {
+  width: 4px;
+}
+.nf-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.nf-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+.nf-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* src/app/globals.css */
+@import "tailwindcss";
+
+@theme {
+  --color-nuero-dark: #05050A;
+  --color-nuero-glass: rgba(255, 255, 255, 0.03);
+  --color-nuero-border: rgba(255, 255, 255, 0.08);
+  --color-neon-blue: #6dcffc;
+  --color-neon-purple: #7d5fff;
+  --color-festive-gold: #F59E0B;
+  --color-festive-red: #E11D48;
+}
+
+/* --- BASE SETTINGS --- */
+body {
+  background-color: var(--color-nuero-dark);
+  color: #ffffff;
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+}
+
+/* --- SCROLLBAR --- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 10px;
+}
+
+/* --- GLASSMORPHISM UTILITIES --- */
+.glass-panel {
+  background: rgba(10, 10, 15, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.8);
+}
+
+.glass-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.glass-card:hover {
+  background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px -10px rgba(109, 207, 252, 0.15);
+}
+
+/* --- NEON GLOWS --- */
+.glow-text-blue {
+  text-shadow: 0 0 20px rgba(109, 207, 252, 0.5);
+}
+.glow-text-gold {
+  text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+}
+
+/* --- ANIMATIONS --- */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
+}
