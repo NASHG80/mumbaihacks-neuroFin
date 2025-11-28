@@ -1,0 +1,4 @@
+redis>=4.5.0
+numpy>=1.25
+pymongo>=4.5
+python-dotenv>=1.0.0

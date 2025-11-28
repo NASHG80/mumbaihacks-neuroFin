@@ -1,0 +1,117 @@
+version: "3.8"
+services:
+  mongodb:
+    image: mongo:6
+    environment:
+      MONGO_INITDB_DATABASE: neurofin
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    depends_on:
+      - mongodb
+      - redis
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - MONGO_DB=neurofin
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PORT=4000
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./api/src:/app/src           # optional dev sync
+      - ./api/models:/app/models     # optional dev sync of trained models
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import http.client; c=http.client.HTTPConnection('localhost',4000,timeout=3); c.request('GET','/health'); r=c.getresponse(); print(r.status)\" || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  kalman:
+    build: ./kalman
+    depends_on:
+      - redis
+      - mongodb
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MONGO_URI=mongodb://mongodb:27017
+      - MONGO_DB=neurofin
+    restart: on-failure
+
+  forecast:
+    build: ./forecast
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - MONGO_DB=neurofin
+    ports:
+      - "5000:5000"
+    restart: on-failure
+
+  agent:
+    build: ./agent
+    environment:
+      # ---- use Groq instead of OpenAI ----
+      - LLM_PROVIDER=groq
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - LLM_MODEL=llama3-70b-8192
+
+      # internal service URLs
+      - NEUROFIN_API=http://api:4000
+      - RISK_AGENT_URL=http://risk:7000/agent/risk/check
+
+      # disable OpenAI fallback completely
+      - OPENAI_API_KEY=""
+      - OPENAI_MODEL=""
+      - OPENAI_RATE_LIMIT_RETRIES=0
+
+    ports:
+      - "6000:6000"
+
+    depends_on:
+      - api
+      - risk
+
+    restart: on-failure
+
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:6000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+
+  risk:
+    build: ./services/risk
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - MONGO_DB=neurofin
+    ports:
+      - "7000:7000"
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodata:
