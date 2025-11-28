@@ -1,0 +1,24 @@
+{
+  "model": "tx_clf.joblib",
+  "text_pipe": "tx_text_pipe.joblib",
+  "label_encoder": "tx_label_encoder.joblib",
+  "categories": [
+    "Entertainment",
+    "Fitness",
+    "Food & Drink",
+    "Fuel",
+    "Gifts",
+    "Groceries",
+    "Housing",
+    "Income",
+    "Insurance",
+    "Loans",
+    "Medical",
+    "Other",
+    "Shopping",
+    "Transport",
+    "Travel",
+    "Utilities"
+  ],
+  "trained_on": 1000
+}

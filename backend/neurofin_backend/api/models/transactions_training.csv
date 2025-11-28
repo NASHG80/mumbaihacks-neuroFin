@@ -1,0 +1,32 @@
+description,amount,direction,category
+Walmart Supercenter groceries,42.18,debit,Groceries
+Whole Foods Market,56.90,debit,Groceries
+Amazon purchase electronics,129.99,debit,Shopping
+Apple Store AirPods,249.00,debit,Shopping
+Starbucks Coffee,6.50,debit,Food & Drink
+McDonald's meal,8.99,debit,Food & Drink
+Uber ride downtown,14.20,debit,Transport
+Lyft airport ride,35.00,debit,Transport
+Shell gas station fuel,52.11,debit,Fuel
+ExxonMobil gasoline,47.85,debit,Fuel
+Netflix monthly subscription,15.49,debit,Entertainment
+Spotify premium subscription,9.99,debit,Entertainment
+Gym membership,29.99,debit,Fitness
+Doctor visit co-pay,35.00,debit,Medical
+Pharmacy prescription,12.50,debit,Medical
+Salary from ACME Corp,50000.00,credit,Income
+Freelance payment Upwork,450.00,credit,Income
+Electricity bill,75.00,debit,Utilities
+Water utility bill,32.00,debit,Utilities
+Internet bill Comcast,59.99,debit,Utilities
+Hotel booking NYC,345.00,debit,Travel
+Flight ticket Delta,650.00,debit,Travel
+Gift purchase Amazon toys,34.90,debit,Gifts
+Movie theater tickets,25.00,debit,Entertainment
+Restaurant dinner Olive Garden,48.30,debit,Food & Drink
+Taxi charge city trip,17.60,debit,Transport
+Grocery store Aldi,29.55,debit,Groceries
+Mobile recharge,10.00,debit,Utilities
+Rent payment apartment,1200.00,debit,Housing
+Loan EMI monthly payment,450.00,debit,Loans
+Insurance premium monthly,85.00,debit,Insurance

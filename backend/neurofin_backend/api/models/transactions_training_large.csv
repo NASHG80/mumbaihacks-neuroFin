@@ -1,0 +1,1001 @@
+description,amount,direction,category
+YMCA POS 2253,32.21,debit,Fitness
+Card Store POS 7869,211.73,debit,Gifts
+AT&T POS 4585,94.02,debit,Utilities
+Expedia Online,192.19,debit,Travel
+City Taxi - Order 18511,74.33,debit,Transport
+Misc Vendor #6939,41.81,debit,Other
+Transit Card POS 3147,16.11,debit,Transport
+Spotify - Order 65492,127.31,debit,Entertainment
+Domino's #4845,116.08,debit,Food & Drink
+Card Store - Order 40924,68.16,debit,Gifts
+Trader Joe's #2861,49.93,debit,Groceries
+Life Insurance Payment POS 2780,186.96,debit,Insurance
+Flipkart Online,837.77,debit,Shopping
+Gym Membership #4989,26.94,debit,Fitness
+Gym Membership POS 7837 (promo),22.82,debit,Fitness
+Doctor Clinic #5836,605.82,debit,Medical
+Comcast - Order 80484,220.72,debit,Utilities
+Transit Card POS 6759,69.86,debit,Transport
+Movie Theater - Order 44229,51.86,debit,Entertainment
+Con Edison #192,967.58,debit,Utilities
+Texaco Outlet,75.42,debit,Fuel
+Gift Shop - Order 96918,27.67,debit,Gifts
+Olive Garden Online REFUND,23.99,credit,Food & Drink
+Airbnb - Order 87687,1801.83,debit,Travel
+Walgreens POS 6549,28.05,debit,Medical
+Gift Shop POS 1487,7.93,debit,Gifts
+ExxonMobil #4752,46.8,debit,Fuel
+BP Branch,95.78,debit,Fuel
+ExxonMobil #8892 (online),25.95,debit,Fuel
+AT&T #7737,123.83,debit,Utilities
+Rent Payment Branch,946.26,debit,Housing
+Housing Society #7288,1887.54,debit,Housing
+Freelance Upwork Outlet,28545.05,credit,Income
+Life Insurance Payment Branch,377.28,debit,Insurance
+Landlord Inc POS 3334,738.49,debit,Housing
+Rent Payment #7942,1937.91,debit,Housing
+Auto Loan Payment - Order 19012,282.32,debit,Loans
+Housing Society - Order 83537,1221.12,debit,Housing
+Texaco - Order 92667,282.52,debit,Fuel
+Olive Garden POS 4743,56.06,debit,Food & Drink
+Gym Membership Branch,60.01,debit,Fitness
+Trader Joe's #3991,91.9,debit,Groceries
+Gift Shop #3683,134.02,debit,Gifts
+Texaco #5421,98.23,debit,Fuel
+Landlord Inc In-Store,528.36,debit,Housing
+Uber In-Store,46.25,debit,Transport
+AMC - Order 32833,148.13,debit,Entertainment
+Freelance Upwork - Order 63054,20945.72,credit,Income
+Freelance Upwork - Order 11170,22598.22,credit,Income
+Lyft - Order 23474,13.92,debit,Transport
+Insurance Co Online,169.93,debit,Insurance
+Expedia - Order 23686,106.68,debit,Travel
+Service Charge - Order 78783,14.77,debit,Other
+City Hospital POS 6320,56.97,debit,Medical
+Loan EMI Bank - Order 36767,673.42,debit,Loans
+Bank Fee #1643,127.9,debit,Other
+Whole Foods Branch,197.0,debit,Groceries
+Apple Store Online,273.69,debit,Shopping
+Bank Fee POS 7191,124.16,debit,Other
+Shell - Order 96533,28.07,debit,Fuel
+Expedia #8801 REFUND,1003.34,credit,Travel
+Lyft Outlet,76.6,debit,Transport
+McDonald's Branch,66.58,debit,Food & Drink
+Expedia #6268,1086.02,debit,Travel
+Insurance Co Online,189.07,debit,Insurance
+Airbnb POS 5380,173.57,debit,Travel
+Misc Vendor POS 7637,120.7,debit,Other
+AMC Outlet,35.71,debit,Entertainment
+Housing Society - Order 65320,642.14,debit,Housing
+Loan EMI Bank POS 5937,384.72,debit,Loans
+Trader Joe's - Order 81582,102.27,debit,Groceries
+City Taxi - Order 75916,12.8,debit,Transport
+Amazon POS 3165,462.77,debit,Shopping
+Gym Membership #5505,110.59,debit,Fitness
+ACME Corp Payroll POS 1241,13422.69,credit,Income
+Walmart #3863,89.65,debit,Groceries
+Walmart #4325,66.7,debit,Groceries
+Apple Store - Order 59036,34.35,debit,Shopping
+CVS Pharmacy Online,608.0,debit,Medical
+Lyft - Order 42472,73.6,debit,Transport
+Spotify Online,174.93,debit,Entertainment
+Amazon Gifts #1744,39.83,debit,Gifts
+Delta Airlines POS 8144,1572.83,debit,Travel
+Electric Co Online,56.42,debit,Utilities
+Insurance Co Branch,300.45,debit,Insurance
+Bookstore #9457,146.7,debit,Entertainment
+Rent Payment - Order 82680 (recurring),1732.9,debit,Housing
+Freelance Upwork #965,44190.87,credit,Income
+YMCA In-Store,16.05,debit,Fitness
+Loan EMI Bank POS 4007,98.46,debit,Loans
+Auto Loan Payment POS 7292,790.64,debit,Loans
+Subway #3737 (online),84.2,debit,Food & Drink
+Walgreens #1848,24.82,debit,Medical
+Uber #5790,30.13,debit,Transport
+Housing Society - Order 93380,800.11,debit,Housing
+Card Store - Order 67870,103.71,debit,Gifts
+Gift Shop In-Store,60.86,debit,Gifts
+Insurance Co #1266,128.62,debit,Insurance
+Planet Fitness #4155,96.06,debit,Fitness
+Freelance Upwork - Order 33969,45135.08,credit,Income
+Walgreens #3371,3761.83,debit,Medical
+Auto Loan Payment - Order 70470,378.29,debit,Loans
+Uber #6152,52.7,debit,Transport
+Con Edison POS 4759,126.75,debit,Utilities
+McDonald's POS 5722,67.36,debit,Food & Drink
+Housing Society #2765,5288.94,debit,Housing
+ACME Corp Payroll #8500,40609.13,credit,Income
+YMCA - Order 29392,79.0,debit,Fitness
+Water Works Branch,160.31,debit,Utilities
+CVS Pharmacy - Order 64138,742.05,debit,Medical
+Service Charge POS 6770,115.0,debit,Other
+Shell - Order 67983,63.09,debit,Fuel
+Comcast - Order 92788,174.45,debit,Utilities
+Insurance Co #2889,286.17,debit,Insurance
+Misc Vendor POS 3971,100.42,debit,Other
+Insurance Co Outlet,224.21,debit,Insurance
+Metro Recharge #8224,67.32,debit,Transport
+ACME Corp Payroll #5843,40710.82,credit,Income
+Netflix Online,193.67,debit,Entertainment
+Metro Recharge In-Store,79.27,debit,Transport
+Amazon Branch,735.51,debit,Shopping
+Life Insurance Payment #6006,219.03,debit,Insurance
+Planet Fitness #4066,22.59,debit,Fitness
+Misc Vendor Branch,96.73,debit,Other
+Misc Vendor - Order 42550 (online),90.35,debit,Other
+Domino's POS 8433,85.11,debit,Food & Drink
+Flipkart Outlet,386.06,debit,Shopping
+Shell POS 9395,27.17,debit,Fuel
+Amazon Gifts POS 2364,92.81,debit,Gifts
+Water Works - Order 50193,204.6,debit,Utilities
+Texaco POS 7184,97.13,debit,Fuel
+Misc Vendor #1720,25.25,debit,Other
+Spotify POS 1077,153.43,debit,Entertainment
+Big Mart - Order 96752,194.05,debit,Groceries
+Aldi In-Store,124.08,debit,Groceries
+Rent Payment POS 7882,966.16,debit,Housing
+Movie Theater Branch,77.03,debit,Entertainment
+Loan EMI Bank #6149,544.14,debit,Loans
+Texaco POS 9998,84.16,debit,Fuel
+Walgreens Online REFUND,511.82,credit,Medical
+City Hospital - Order 37215 (promo),282.47,debit,Medical
+Cafe Nero - Order 16764,54.26,debit,Food & Drink
+AT&T Online,273.26,debit,Utilities
+Flipkart - Order 33456,502.43,debit,Shopping
+Misc Vendor #4708,26.86,debit,Other
+Airbnb #4290,214.58,debit,Travel
+City Hospital Outlet,502.5,debit,Medical
+Service Charge Outlet,138.06,debit,Other
+Walgreens POS 3389,655.45,debit,Medical
+Texaco #4531,95.54,debit,Fuel
+Doctor Clinic Online,317.75,debit,Medical
+Misc Vendor #7176,4.77,debit,Other
+Stripe Payout POS 5166,50418.82,credit,Income
+Flipkart - Order 13864,1090.42,debit,Shopping
+Electric Co POS 3906,187.95,debit,Utilities
+Transit Card - Order 22245,58.21,debit,Transport
+Delta Airlines #2195 REFUND,207.41,credit,Travel
+Shell POS 9589,74.46,debit,Fuel
+Uber POS 8933,49.32,debit,Transport
+Whole Foods Branch,31.91,debit,Groceries
+Life Insurance Payment - Order 42370,39.81,debit,Insurance
+Stripe Payout POS 9586,46061.18,credit,Income
+YMCA POS 2601,84.26,debit,Fitness
+Transit Card Online,63.07,debit,Transport
+Landlord Inc #3542,414.86,debit,Housing
+Auto Loan Payment In-Store,1072.76,debit,Loans
+Life Insurance Payment #4529,174.48,debit,Insurance
+Comcast - Order 16366,68.62,debit,Utilities
+Walgreens - Order 21820,103.22,debit,Medical
+Cafe Nero POS 6188,7.2,debit,Food & Drink
+Housing Society POS 5320,1994.07,debit,Housing
+ACME Corp Payroll POS 4784,11772.89,credit,Income
+Rent Payment #6984,521.11,debit,Housing
+Electric Co - Order 52184,289.81,debit,Utilities
+Domino's #852,27.89,debit,Food & Drink
+Aldi #3888,185.65,debit,Groceries
+Gift Shop Online,285.61,debit,Gifts
+Stripe Payout POS 3675,49791.4,credit,Income
+Con Edison Branch REFUND,138.27,credit,Utilities
+Con Edison POS 4337,176.12,debit,Utilities
+YMCA In-Store,47.25,debit,Fitness
+Metro Recharge POS 2213,57.64,debit,Transport
+Spotify Online,188.89,debit,Entertainment
+Big Mart POS 7482,36.53,debit,Groceries
+Olive Garden #8857 (recurring),88.94,debit,Food & Drink
+Expedia #1883,393.54,debit,Travel
+AT&T Outlet,281.94,debit,Utilities
+Freelance Upwork Branch,51332.4,credit,Income
+Electric Co POS 4327,275.22,debit,Utilities
+Auto Loan Payment - Order 88494,121.06,debit,Loans
+Landlord Inc #6168,425.34,debit,Housing
+Freelance Upwork POS 5655,37775.6,credit,Income
+Con Edison Outlet,287.96,debit,Utilities
+Netflix - Order 54801,111.67,debit,Entertainment
+YMCA - Order 31468,75.77,debit,Fitness
+Olive Garden POS 9017,35.73,debit,Food & Drink
+Domino's In-Store,51.06,debit,Food & Drink
+Card Store - Order 51120,215.5,debit,Gifts
+ACME Corp Payroll POS 7474,35371.77,credit,Income
+Subway - Order 89569,82.3,debit,Food & Drink
+Marriott - Order 72391,1070.02,debit,Travel
+Landlord Inc - Order 13148,705.21,debit,Housing
+Gym Membership #2524,73.2,debit,Fitness
+YMCA POS 9837,103.98,debit,Fitness
+Bookstore POS 2970,196.95,debit,Entertainment
+Amazon POS 7102,106.46,debit,Shopping
+Amazon Gifts - Order 13514,133.56,debit,Gifts
+Gym Membership POS 7883 (recurring),12.36,debit,Fitness
+Spotify POS 2809,22.57,debit,Entertainment
+Auto Loan Payment #2710,104.9,debit,Loans
+Amazon Gifts Branch,207.15,debit,Gifts
+Auto Loan Payment POS 4077,573.46,debit,Loans
+Marriott POS 8681,965.0,debit,Travel
+ACME Corp Payroll - Order 42631,44388.33,credit,Income
+Walgreens In-Store,266.78,debit,Medical
+CVS Pharmacy #3422,227.97,debit,Medical
+City Taxi POS 4986,42.87,debit,Transport
+AT&T Branch,90.19,debit,Utilities
+Auto Loan Payment Branch,175.82,debit,Loans
+Landlord Inc #8524,1284.19,debit,Housing
+Loan EMI Bank Online,606.08,debit,Loans
+BP POS 7779,77.99,debit,Fuel
+Airbnb In-Store,350.82,debit,Travel
+Marriott POS 3314,771.36,debit,Travel
+Gift Shop - Order 82833,72.81,debit,Gifts
+Misc Vendor Branch,25.27,debit,Other
+Housing Society Online,560.62,debit,Housing
+Loan EMI Bank Online,404.92,debit,Loans
+Amazon Gifts POS 3692,228.96,debit,Gifts
+Gym Membership POS 4047,63.96,debit,Fitness
+Bank Fee POS 3281,133.97,debit,Other
+BP POS 7761,30.73,debit,Fuel
+Netflix #1907,97.51,debit,Entertainment
+Doctor Clinic POS 8005,488.3,debit,Medical
+Loan EMI Bank POS 4438,490.25,debit,Loans
+Gift Shop Online,263.54,debit,Gifts
+Olive Garden Outlet,56.09,debit,Food & Drink
+Transit Card Online,53.17,debit,Transport
+Gym Membership #1268,28.38,debit,Fitness
+Apple Store #6878,939.39,debit,Shopping
+Walmart #5698,74.83,debit,Groceries
+BP - Order 61897,23.62,debit,Fuel
+Landlord Inc - Order 35101,1139.47,debit,Housing
+Domino's Outlet,40.95,debit,Food & Drink
+Doctor Clinic POS 8625,182.92,debit,Medical
+Planet Fitness - Order 47274,41.38,debit,Fitness
+Gift Shop Outlet,149.44,debit,Gifts
+Mobil POS 5478,48.46,debit,Fuel
+Insurance Co POS 4377,122.14,debit,Insurance
+Netflix In-Store,14.77,debit,Entertainment
+Delta Airlines #630,1925.39,debit,Travel
+Service Charge POS 3031,128.99,debit,Other
+Walgreens POS 2505,177.86,debit,Medical
+Service Charge Online,19.34,debit,Other
+Delta Airlines Branch,58.91,debit,Travel
+Gift Shop #8700,293.66,debit,Gifts
+Amazon - Order 42819,752.6,debit,Shopping
+Uber - Order 61807,18.48,debit,Transport
+ACME Corp Payroll POS 6690,44124.74,credit,Income
+Rent Payment #7449,1311.8,debit,Housing
+Doctor Clinic #9380,662.47,debit,Medical
+Water Works #1762,130.01,debit,Utilities
+Loan EMI Bank POS 7233,262.42,debit,Loans
+Walmart Online,182.52,debit,Groceries
+Misc Vendor #5162,134.58,debit,Other
+Life Insurance Payment POS 5081,89.58,debit,Insurance
+Amazon #9374,966.18,debit,Shopping
+Water Works POS 6432,120.45,debit,Utilities
+Apple Store #7275,555.89,debit,Shopping
+Spotify POS 7738,56.01,debit,Entertainment
+Domino's #1214,76.05,debit,Food & Drink
+Card Store #9519,41.07,debit,Gifts
+Walgreens In-Store,719.42,debit,Medical
+Bank Fee - Order 11859,48.14,debit,Other
+Target Online,988.82,debit,Shopping
+Marriott - Order 32972,515.33,debit,Travel
+Spotify #5874,182.52,debit,Entertainment
+Apple Store - Order 31871,1011.17,debit,Shopping
+Card Store Branch,163.54,debit,Gifts
+Whole Foods POS 9280,182.55,debit,Groceries
+Loan EMI Bank Online,498.65,debit,Loans
+Life Insurance Payment #4981 (recurring),37.33,debit,Insurance
+Freelance Upwork Branch,42178.12,credit,Income
+AMC POS 8035 REFUND,98.09,credit,Entertainment
+Stripe Payout In-Store,46672.99,credit,Income
+Airbnb POS 3359,1951.2,debit,Travel
+Spotify #5394,71.83,debit,Entertainment
+Walmart - Order 70068,35.17,debit,Groceries
+Insurance Co POS 8116,204.65,debit,Insurance
+Amazon POS 2551,953.6,debit,Shopping
+ExxonMobil - Order 20084,87.96,debit,Fuel
+Auto Loan Payment - Order 99592,614.29,debit,Loans
+Water Works - Order 38752,163.03,debit,Utilities
+CVS Pharmacy - Order 64246,664.42,debit,Medical
+Mobil Branch,65.13,debit,Fuel
+Subway - Order 46655,87.25,debit,Food & Drink
+Housing Society Branch,1181.1,debit,Housing
+Water Works Online,65.06,debit,Utilities
+AT&T Branch,79.74,debit,Utilities
+Bank Fee #6253,119.27,debit,Other
+Card Store Online,289.69,debit,Gifts
+Loan EMI Bank POS 4182,628.45,debit,Loans
+YMCA POS 6917,115.07,debit,Fitness
+Amazon POS 7290,592.61,debit,Shopping
+Walgreens POS 6168,427.59,debit,Medical
+Amazon Gifts POS 3427,39.36,debit,Gifts
+ACME Corp Payroll POS 6328,28298.01,credit,Income
+Movie Theater #1490,116.59,debit,Entertainment
+ACME Corp Payroll In-Store,48343.21,credit,Income
+Movie Theater #985,172.83,debit,Entertainment
+Walgreens In-Store,2231.65,debit,Medical
+Amazon In-Store,762.98,debit,Shopping
+Whole Foods #3933,165.04,debit,Groceries
+AMC #9393,171.52,debit,Entertainment
+Auto Loan Payment #5625,548.75,debit,Loans
+Service Charge - Order 99505,91.42,debit,Other
+CVS Pharmacy POS 2393,620.19,debit,Medical
+Loan EMI Bank POS 7616 REFUND,618.35,credit,Loans
+Planet Fitness #2215,12.94,debit,Fitness
+Texaco #5198,55.58,debit,Fuel
+Transit Card Online,28.45,debit,Transport
+Amazon Gifts - Order 26207,58.29,debit,Gifts
+Uber In-Store,8.25,debit,Transport
+BP - Order 74044,48.17,debit,Fuel
+ACME Corp Payroll POS 1448,7417.96,credit,Income
+Service Charge Outlet,64.13,debit,Other
+Amazon Gifts - Order 44314 (recurring),206.86,debit,Gifts
+Misc Vendor #398,23.58,debit,Other
+Card Store POS 6910,30.85,debit,Gifts
+Subway - Order 59131,69.21,debit,Food & Drink
+Misc Vendor #7812,142.33,debit,Other
+Texaco #2302,87.09,debit,Fuel
+Loan EMI Bank Online,358.15,debit,Loans
+Water Works Branch,154.99,debit,Utilities
+Metro Recharge #1039,46.85,debit,Transport
+Whole Foods POS 4501,192.37,debit,Groceries
+Amazon Gifts POS 6233,221.88,debit,Gifts
+Movie Theater In-Store,29.95,debit,Entertainment
+Netflix - Order 58819,97.54,debit,Entertainment
+BestBuy Branch,211.46,debit,Shopping
+AT&T #1652 REFUND,290.08,credit,Utilities
+Subway POS 3068,4.44,debit,Food & Drink
+Gym Membership Outlet,54.22,debit,Fitness
+CVS Pharmacy Branch (promo),259.99,debit,Medical
+Airbnb POS 4898,376.2,debit,Travel
+Stripe Payout POS 5150,38491.94,credit,Income
+Lyft Branch,56.91,debit,Transport
+BP POS 9401,84.23,debit,Fuel
+BestBuy #2887,1143.85,debit,Shopping
+McDonald's POS 4826,90.13,debit,Food & Drink
+Metro Recharge Branch,42.5,debit,Transport
+Rent Payment Outlet,1977.82,debit,Housing
+Freelance Upwork #5286,3104.75,credit,Income
+YMCA #5661,107.66,debit,Fitness
+Expedia In-Store,796.46,debit,Travel
+Auto Loan Payment - Order 64636,189.8,debit,Loans
+BP - Order 85511,31.46,debit,Fuel
+Life Insurance Payment #9941,91.47,debit,Insurance
+Card Store Outlet,145.08,debit,Gifts
+Loan EMI Bank - Order 71220,182.33,debit,Loans
+Insurance Co Online,200.2,debit,Insurance
+Misc Vendor - Order 24201,10.61,debit,Other
+Rent Payment POS 9076,757.79,debit,Housing
+Airbnb #9409,1480.28,debit,Travel
+Stripe Payout POS 8480,31645.86,credit,Income
+Bank Fee - Order 60413 REFUND,36.04,credit,Other
+Whole Foods Outlet,66.17,debit,Groceries
+Flipkart - Order 87580,316.88,debit,Shopping
+Water Works - Order 41938,163.54,debit,Utilities
+Marriott - Order 67747,397.96,debit,Travel
+Olive Garden #1635 (vip),23.34,debit,Food & Drink
+Insurance Co - Order 32380,301.69,debit,Insurance
+Netflix Online,141.64,debit,Entertainment
+Insurance Co - Order 26232,115.05,debit,Insurance
+Planet Fitness - Order 63383,108.42,debit,Fitness
+Gym Membership POS 6952,79.9,debit,Fitness
+AT&T Online,146.32,debit,Utilities
+Amazon #3529,646.58,debit,Shopping
+Doctor Clinic POS 8434 REFUND,482.97,credit,Medical
+Walgreens - Order 51275,370.99,debit,Medical
+Gym Membership POS 6346,86.65,debit,Fitness
+City Taxi #1190,8.07,debit,Transport
+Big Mart - Order 17492,106.49,debit,Groceries
+Kroger - Order 14165,124.38,debit,Groceries
+Movie Theater Branch,164.39,debit,Entertainment
+Insurance Co Branch,148.42,debit,Insurance
+Freelance Upwork #5924,24999.77,credit,Income
+Whole Foods #4562,28.38,debit,Groceries
+Life Insurance Payment #3451,302.18,debit,Insurance
+Mobil - Order 93647 (vip),48.4,debit,Fuel
+Whole Foods Outlet,137.62,debit,Groceries
+McDonald's #7623,41.03,debit,Food & Drink
+YMCA POS 1517,23.1,debit,Fitness
+Lyft - Order 15726,49.63,debit,Transport
+Marriott Online,972.66,debit,Travel
+Big Mart POS 1993,162.11,debit,Groceries
+AT&T In-Store,72.33,debit,Utilities
+Big Mart In-Store,22.58,debit,Groceries
+CVS Pharmacy In-Store,2922.16,debit,Medical
+Walmart - Order 29536,17.95,debit,Groceries
+Comcast - Order 90482,70.16,debit,Utilities
+YMCA Branch,43.52,debit,Fitness
+Life Insurance Payment - Order 35571,320.69,debit,Insurance
+Cafe Nero #9985,13.91,debit,Food & Drink
+Landlord Inc POS 5998,1676.13,debit,Housing
+BestBuy #8219,647.5,debit,Shopping
+Bank Fee In-Store,28.1,debit,Other
+Loan EMI Bank POS 4325,55.58,debit,Loans
+Target - Order 89988,977.17,debit,Shopping
+Planet Fitness Online,90.98,debit,Fitness
+Gym Membership #9032,108.62,debit,Fitness
+Life Insurance Payment POS 3253,130.61,debit,Insurance
+Delta Airlines POS 5859,1411.21,debit,Travel
+Bookstore #6630,199.51,debit,Entertainment
+Apple Store In-Store,1150.36,debit,Shopping
+Loan EMI Bank POS 2645,196.31,debit,Loans
+Big Mart - Order 95426,13.87,debit,Groceries
+City Taxi #9095,23.28,debit,Transport
+Life Insurance Payment Online,226.88,debit,Insurance
+Con Edison POS 7171,202.93,debit,Utilities
+Water Works #1948,40.33,debit,Utilities
+Housing Society #4598,1644.7,debit,Housing
+BP POS 2531 (recurring),64.22,debit,Fuel
+Auto Loan Payment POS 6209,63.24,debit,Loans
+Planet Fitness #3037,92.08,debit,Fitness
+Kroger Branch,167.84,debit,Groceries
+Target POS 4084,214.79,debit,Shopping
+Water Works POS 4765,50.4,debit,Utilities
+Walgreens Outlet,538.54,debit,Medical
+Movie Theater #240,53.52,debit,Entertainment
+Amazon POS 2425,145.28,debit,Shopping
+Flipkart Outlet,4190.56,debit,Shopping
+CVS Pharmacy - Order 24833 REFUND,262.15,credit,Medical
+Amazon Gifts #8537,97.11,debit,Gifts
+Lyft Online,30.71,debit,Transport
+Card Store - Order 53610,154.37,debit,Gifts
+Gym Membership Outlet,11.42,debit,Fitness
+Airbnb #8528 REFUND,1671.79,credit,Travel
+Mobil - Order 27589,46.45,debit,Fuel
+Life Insurance Payment POS 5480,101.97,debit,Insurance
+Uber - Order 48038,72.38,debit,Transport
+Stripe Payout - Order 75404,52428.18,credit,Income
+Uber #1489,65.17,debit,Transport
+Domino's Online,105.28,debit,Food & Drink
+Amazon - Order 63948,163.57,debit,Shopping
+Mobil #4707,61.95,debit,Fuel
+Auto Loan Payment Outlet,225.17,debit,Loans
+Movie Theater Outlet,63.92,debit,Entertainment
+Loan EMI Bank Branch,483.76,debit,Loans
+Stripe Payout POS 6167,53938.21,credit,Income
+Uber - Order 83259,66.66,debit,Transport
+Trader Joe's POS 2341,594.69,debit,Groceries
+Stripe Payout Outlet,25067.78,credit,Income
+Rent Payment POS 6822,1355.45,debit,Housing
+McDonald's POS 6061,45.69,debit,Food & Drink
+Trader Joe's POS 4185 (online),56.36,debit,Groceries
+Electric Co #9839 REFUND,204.49,credit,Utilities
+Card Store POS 1095,55.66,debit,Gifts
+Auto Loan Payment - Order 17563,75.88,debit,Loans
+Loan EMI Bank Branch,128.92,debit,Loans
+Insurance Co POS 8858,399.22,debit,Insurance
+Comcast #6619,241.7,debit,Utilities
+BestBuy - Order 70807,658.14,debit,Shopping
+YMCA - Order 63773,39.36,debit,Fitness
+Aldi Branch,125.25,debit,Groceries
+Marriott #7627,1279.79,debit,Travel
+Misc Vendor #5947,53.05,debit,Other
+McDonald's Branch,118.83,debit,Food & Drink
+Amazon Gifts POS 2457,211.87,debit,Gifts
+Expedia Branch,1776.17,debit,Travel
+Planet Fitness In-Store,116.72,debit,Fitness
+CVS Pharmacy Online,220.49,debit,Medical
+Bank Fee Outlet,102.65,debit,Other
+Amazon Gifts POS 5073 (online),19.08,debit,Gifts
+Rent Payment - Order 65550,828.37,debit,Housing
+Planet Fitness POS 2369,115.34,debit,Fitness
+CVS Pharmacy POS 6536,638.82,debit,Medical
+Bank Fee POS 2841,17.41,debit,Other
+Transit Card Outlet,54.91,debit,Transport
+Big Mart In-Store,41.88,debit,Groceries
+Mobil POS 1440,36.77,debit,Fuel
+Gift Shop - Order 67424,207.07,debit,Gifts
+Landlord Inc #8826,1687.3,debit,Housing
+Bank Fee #6195,28.37,debit,Other
+ACME Corp Payroll - Order 62947,24724.51,credit,Income
+Gym Membership #9860,13.05,debit,Fitness
+Auto Loan Payment POS 7249,619.14,debit,Loans
+Con Edison Online,236.63,debit,Utilities
+Amazon Gifts - Order 15390,279.45,debit,Gifts
+Auto Loan Payment #4603,742.05,debit,Loans
+Doctor Clinic - Order 18509,688.23,debit,Medical
+Netflix #6157,14.35,debit,Entertainment
+Delta Airlines - Order 95037,1814.09,debit,Travel
+Airbnb Branch REFUND,1747.04,credit,Travel
+Planet Fitness - Order 57636,72.81,debit,Fitness
+Big Mart POS 3677,198.01,debit,Groceries
+BP #772 REFUND,88.03,credit,Fuel
+City Taxi POS 5911,30.73,debit,Transport
+Amazon Gifts #5957,272.04,debit,Gifts
+Shell POS 7566,83.26,debit,Fuel
+AMC POS 5923,67.57,debit,Entertainment
+City Taxi #3640,17.12,debit,Transport
+Expedia #317,569.55,debit,Travel
+City Taxi POS 9433 REFUND,26.07,credit,Transport
+Doctor Clinic POS 4638,318.49,debit,Medical
+Auto Loan Payment #5640,883.68,debit,Loans
+CVS Pharmacy Branch,192.74,debit,Medical
+Life Insurance Payment POS 6528,396.32,debit,Insurance
+AMC - Order 83183,96.51,debit,Entertainment
+Con Edison In-Store,272.03,debit,Utilities
+City Taxi - Order 96127,44.59,debit,Transport
+Domino's #9141,17.46,debit,Food & Drink
+Card Store Online,133.69,debit,Gifts
+Airbnb Outlet,266.38,debit,Travel
+Auto Loan Payment - Order 71506,3513.03,debit,Loans
+Life Insurance Payment POS 3711,165.98,debit,Insurance
+Shell #8199,92.1,debit,Fuel
+Amazon POS 7878,1167.21,debit,Shopping
+Walmart #9648,129.91,debit,Groceries
+Trader Joe's - Order 33053,33.06,debit,Groceries
+Service Charge POS 3059,87.18,debit,Other
+Stripe Payout In-Store,1396.53,credit,Income
+Amazon Outlet,252.21,debit,Shopping
+Freelance Upwork POS 7090,45968.97,credit,Income
+Big Mart In-Store,11.23,debit,Groceries
+Walgreens POS 1840,585.48,debit,Medical
+Expedia #8161,605.88,debit,Travel
+Auto Loan Payment - Order 69183,464.68,debit,Loans
+Delta Airlines In-Store,1176.97,debit,Travel
+Service Charge #1605,68.77,debit,Other
+Loan EMI Bank - Order 22521,168.45,debit,Loans
+Metro Recharge POS 2761,22.63,debit,Transport
+Landlord Inc - Order 30214,1933.91,debit,Housing
+Netflix Outlet,95.52,debit,Entertainment
+Water Works POS 3871,76.48,debit,Utilities
+ACME Corp Payroll Online,38852.21,credit,Income
+Housing Society - Order 72368,767.44,debit,Housing
+Bank Fee Outlet,99.14,debit,Other
+ACME Corp Payroll Online,37277.08,credit,Income
+Netflix POS 7671,174.1,debit,Entertainment
+Marriott - Order 48687,1721.1,debit,Travel
+Metro Recharge #9429,55.05,debit,Transport
+Landlord Inc #4265,1900.28,debit,Housing
+AMC POS 3664,169.92,debit,Entertainment
+Rent Payment Online,982.86,debit,Housing
+Airbnb #4829,6128.27,debit,Travel
+Amazon - Order 85457,713.06,debit,Shopping
+Stripe Payout POS 6303,16881.81,credit,Income
+CVS Pharmacy - Order 86415,164.55,debit,Medical
+Shell POS 6139,75.24,debit,Fuel
+Cafe Nero POS 4263,15.48,debit,Food & Drink
+Walmart #7537,167.59,debit,Groceries
+Walgreens - Order 73369,83.11,debit,Medical
+Amazon #7630,14.52,debit,Shopping
+Service Charge #1690,4.58,debit,Other
+Texaco POS 1911,53.23,debit,Fuel
+Housing Society #8371,972.02,debit,Housing
+YMCA POS 2723,82.44,debit,Fitness
+Insurance Co #1280,174.58,debit,Insurance
+Service Charge Outlet,325.39,debit,Other
+Service Charge #1635,62.28,debit,Other
+Delta Airlines #9781,1643.22,debit,Travel
+Card Store POS 7395,203.57,debit,Gifts
+Con Edison #8436,202.43,debit,Utilities
+AT&T - Order 20744,268.17,debit,Utilities
+YMCA Outlet,74.95,debit,Fitness
+Delta Airlines POS 3745,637.67,debit,Travel
+Bank Fee Branch,146.81,debit,Other
+Doctor Clinic - Order 33580,564.43,debit,Medical
+Landlord Inc - Order 45171,645.1,debit,Housing
+Mobil Online,234.1,debit,Fuel
+Flipkart POS 4568,596.18,debit,Shopping
+Big Mart POS 2771,173.13,debit,Groceries
+Amazon Gifts #7200,28.63,debit,Gifts
+Loan EMI Bank #6386 (recurring),258.84,debit,Loans
+Misc Vendor #4599,106.89,debit,Other
+Gift Shop Branch,169.31,debit,Gifts
+Flipkart #7422,142.53,debit,Shopping
+Big Mart #330,66.74,debit,Groceries
+McDonald's Online,89.78,debit,Food & Drink
+Auto Loan Payment POS 6623,607.23,debit,Loans
+City Hospital #7568,723.42,debit,Medical
+Landlord Inc Outlet,575.88,debit,Housing
+Walgreens #3435,552.48,debit,Medical
+Amazon - Order 74865,714.75,debit,Shopping
+Transit Card #7501,40.6,debit,Transport
+Landlord Inc - Order 73691,1016.99,debit,Housing
+Shell Branch,84.37,debit,Fuel
+Life Insurance Payment #7822,291.02,debit,Insurance
+ExxonMobil - Order 14888,22.91,debit,Fuel
+Electric Co #6705 REFUND,52.99,credit,Utilities
+Comcast POS 6876,263.05,debit,Utilities
+Housing Society Online REFUND,1801.27,credit,Housing
+Subway In-Store,109.88,debit,Food & Drink
+Comcast POS 2442,53.24,debit,Utilities
+Target - Order 67684,741.21,debit,Shopping
+Freelance Upwork Online,23926.16,credit,Income
+Trader Joe's In-Store,50.22,debit,Groceries
+Spotify #1085,175.66,debit,Entertainment
+CVS Pharmacy In-Store,527.26,debit,Medical
+Rent Payment #6193,1051.26,debit,Housing
+CVS Pharmacy In-Store,500.32,debit,Medical
+Con Edison POS 8170,205.0,debit,Utilities
+Transit Card #9089 (online),78.52,debit,Transport
+Housing Society In-Store,627.34,debit,Housing
+ACME Corp Payroll Outlet,57815.62,credit,Income
+AMC - Order 39939,119.99,debit,Entertainment
+Subway Outlet,100.98,debit,Food & Drink
+Walgreens #4634,572.85,debit,Medical
+Olive Garden - Order 13441,92.2,debit,Food & Drink
+Flipkart POS 8449,7.96,debit,Shopping
+Loan EMI Bank #8258,722.58,debit,Loans
+Life Insurance Payment In-Store,365.37,debit,Insurance
+Loan EMI Bank POS 7136 (vip),163.75,debit,Loans
+Stripe Payout POS 8951,33761.98,credit,Income
+Card Store - Order 91764,28.08,debit,Gifts
+Target #9478 (recurring),753.28,debit,Shopping
+BP - Order 56437,42.32,debit,Fuel
+Gift Shop Branch,247.7,debit,Gifts
+Rent Payment - Order 54430,783.71,debit,Housing
+Planet Fitness Outlet,54.25,debit,Fitness
+Domino's - Order 57453,8.07,debit,Food & Drink
+Service Charge #3967,118.79,debit,Other
+Housing Society Branch,1362.11,debit,Housing
+City Taxi #7750,3.48,debit,Transport
+Olive Garden Online (vip),16.65,debit,Food & Drink
+Planet Fitness #9483,68.42,debit,Fitness
+Target Branch,245.75,debit,Shopping
+Transit Card - Order 25907,4.05,debit,Transport
+Loan EMI Bank #3997,586.82,debit,Loans
+Rent Payment - Order 38757,662.34,debit,Housing
+Subway #3030,49.88,debit,Food & Drink
+Planet Fitness - Order 39697,18.65,debit,Fitness
+Gift Shop In-Store,55.52,debit,Gifts
+Mobil In-Store,55.35,debit,Fuel
+City Hospital - Order 84323,290.61,debit,Medical
+Planet Fitness - Order 14546,69.39,debit,Fitness
+Housing Society In-Store,1907.19,debit,Housing
+Gift Shop - Order 71799,172.98,debit,Gifts
+AMC - Order 60556,140.75,debit,Entertainment
+BP #3338,37.7,debit,Fuel
+Metro Recharge Branch,7.33,debit,Transport
+Domino's #1511,31.5,debit,Food & Drink
+Doctor Clinic Branch,20.17,debit,Medical
+Lyft POS 9444,44.36,debit,Transport
+Stripe Payout #7387,7939.87,credit,Income
+Insurance Co #5468,314.89,debit,Insurance
+Gift Shop #5830,278.36,debit,Gifts
+Doctor Clinic POS 9051,158.64,debit,Medical
+Gym Membership - Order 12438,100.63,debit,Fitness
+Airbnb POS 2870,1250.48,debit,Travel
+Texaco - Order 65591,32.41,debit,Fuel
+Bookstore Outlet,98.94,debit,Entertainment
+Card Store Online (promo),133.06,debit,Gifts
+Bank Fee Online,24.7,debit,Other
+BP POS 6194,94.7,debit,Fuel
+Loan EMI Bank POS 9436,52.35,debit,Loans
+Freelance Upwork - Order 81197,53794.09,credit,Income
+Misc Vendor - Order 70344,34.46,debit,Other
+Aldi POS 6310,937.61,debit,Groceries
+Housing Society - Order 18569,625.86,debit,Housing
+Walmart POS 3506,109.13,debit,Groceries
+Misc Vendor - Order 81576,142.9,debit,Other
+Gift Shop Outlet,133.55,debit,Gifts
+Misc Vendor Online,130.3,debit,Other
+Life Insurance Payment - Order 51896,23.49,debit,Insurance
+YMCA - Order 71066,49.74,debit,Fitness
+Shell Branch,72.69,debit,Fuel
+Marriott Branch,841.76,debit,Travel
+Auto Loan Payment POS 6045,743.24,debit,Loans
+Domino's In-Store,34.99,debit,Food & Drink
+BestBuy POS 6828,814.23,debit,Shopping
+Insurance Co #6461,98.84,debit,Insurance
+Life Insurance Payment POS 1119,304.87,debit,Insurance
+Gift Shop #5333,88.47,debit,Gifts
+Freelance Upwork Outlet (recurring),13633.01,credit,Income
+Life Insurance Payment Branch,272.83,debit,Insurance
+Life Insurance Payment - Order 89498,206.69,debit,Insurance
+Stripe Payout In-Store,21920.51,credit,Income
+Planet Fitness POS 9433,86.56,debit,Fitness
+Stripe Payout In-Store,49255.4,credit,Income
+Airbnb POS 5826,197.64,debit,Travel
+Texaco Branch,85.32,debit,Fuel
+Housing Society - Order 31344,1078.11,debit,Housing
+Service Charge In-Store,72.37,debit,Other
+Auto Loan Payment POS 2138,224.78,debit,Loans
+Gym Membership - Order 90533,26.25,debit,Fitness
+Stripe Payout Outlet (online),15432.95,credit,Income
+YMCA - Order 54605,34.32,debit,Fitness
+Bank Fee #709,16.69,debit,Other
+Delta Airlines POS 2318,615.42,debit,Travel
+Transit Card - Order 65476,5.72,debit,Transport
+Auto Loan Payment - Order 92554,97.78,debit,Loans
+Insurance Co #5739,206.98,debit,Insurance
+Rent Payment #43,1002.38,debit,Housing
+ACME Corp Payroll In-Store,28417.28,credit,Income
+Insurance Co POS 3418,182.3,debit,Insurance
+Life Insurance Payment #8232 (recurring),67.93,debit,Insurance
+Amazon Gifts Branch,6.71,debit,Gifts
+Flipkart POS 4496,714.45,debit,Shopping
+Electric Co - Order 99995,214.41,debit,Utilities
+Insurance Co POS 6134,20.64,debit,Insurance
+AMC - Order 32570,137.76,debit,Entertainment
+Apple Store POS 5402,95.24,debit,Shopping
+Rent Payment Outlet,1804.88,debit,Housing
+BestBuy - Order 71824,789.95,debit,Shopping
+Whole Foods - Order 51904,141.85,debit,Groceries
+Bank Fee In-Store,126.23,debit,Other
+Whole Foods - Order 97012 (recurring),52.68,debit,Groceries
+Amazon #7241,786.14,debit,Shopping
+Trader Joe's #2714,122.46,debit,Groceries
+Amazon Gifts - Order 60921,149.8,debit,Gifts
+Bank Fee POS 2180,136.46,debit,Other
+Walgreens #9364,602.47,debit,Medical
+Water Works #5263,174.14,debit,Utilities
+ExxonMobil #1799,62.48,debit,Fuel
+Domino's #261,116.4,debit,Food & Drink
+Transit Card Online,61.82,debit,Transport
+BP Branch,56.72,debit,Fuel
+Life Insurance Payment - Order 58777,319.36,debit,Insurance
+Auto Loan Payment #6618,74.16,debit,Loans
+Loan EMI Bank #4101 REFUND,578.36,credit,Loans
+Domino's Online,35.28,debit,Food & Drink
+Metro Recharge #3155,63.47,debit,Transport
+Bank Fee Online,16.8,debit,Other
+Amazon Gifts - Order 47022,51.11,debit,Gifts
+Mobil #7926 REFUND,52.91,credit,Fuel
+Aldi In-Store (promo),197.57,debit,Groceries
+Landlord Inc #7225,782.97,debit,Housing
+YMCA Outlet,50.91,debit,Fitness
+Service Charge POS 7866,103.64,debit,Other
+Life Insurance Payment POS 3189,132.06,debit,Insurance
+Planet Fitness - Order 73472,97.24,debit,Fitness
+Gift Shop - Order 11035,136.63,debit,Gifts
+Stripe Payout #1321,6185.45,credit,Income
+Card Store #7663,296.7,debit,Gifts
+Bank Fee - Order 13956,12.48,debit,Other
+Life Insurance Payment POS 4946,281.43,debit,Insurance
+Trader Joe's POS 5543,62.17,debit,Groceries
+Delta Airlines Outlet,1893.46,debit,Travel
+Rent Payment - Order 98103,516.63,debit,Housing
+Movie Theater - Order 11493,73.34,debit,Entertainment
+Marriott Outlet,1186.32,debit,Travel
+Subway POS 9889,24.95,debit,Food & Drink
+Insurance Co In-Store,256.48,debit,Insurance
+Movie Theater #4279,173.95,debit,Entertainment
+Bookstore POS 3703,24.75,debit,Entertainment
+Landlord Inc #9861 (online),929.82,debit,Housing
+Apple Store POS 5835,663.07,debit,Shopping
+Card Store #533,40.6,debit,Gifts
+AT&T Branch,80.65,debit,Utilities
+Subway #4847 (vip),83.24,debit,Food & Drink
+ACME Corp Payroll POS 8746,41045.82,credit,Income
+Starbucks - Order 29555,92.44,debit,Food & Drink
+Big Mart POS 7118,95.78,debit,Groceries
+Auto Loan Payment POS 1648 REFUND,266.34,credit,Loans
+Spotify #3397,193.59,debit,Entertainment
+Aldi - Order 15817,23.3,debit,Groceries
+Walgreens #7470,261.64,debit,Medical
+City Hospital Outlet,95.5,debit,Medical
+Trader Joe's #5738,85.71,debit,Groceries
+Electric Co In-Store,67.22,debit,Utilities
+City Taxi #9699,37.25,debit,Transport
+Rent Payment #8659,468.87,debit,Housing
+Freelance Upwork - Order 11197,47907.66,credit,Income
+Kroger Online,172.51,debit,Groceries
+Delta Airlines In-Store,96.22,debit,Travel
+YMCA #2640 REFUND,73.59,credit,Fitness
+Whole Foods POS 5562,35.14,debit,Groceries
+Apple Store #4189,1036.2,debit,Shopping
+Kroger Branch,176.15,debit,Groceries
+Airbnb #9830,303.32,debit,Travel
+ExxonMobil - Order 78302,44.09,debit,Fuel
+Auto Loan Payment #7230,333.3,debit,Loans
+Marriott - Order 52498 (recurring),1931.15,debit,Travel
+Netflix Branch REFUND,183.85,credit,Entertainment
+Expedia POS 3917,942.59,debit,Travel
+Metro Recharge - Order 47967,55.43,debit,Transport
+Stripe Payout POS 5444,46967.96,credit,Income
+City Taxi - Order 11013,43.54,debit,Transport
+McDonald's - Order 84228,116.7,debit,Food & Drink
+Housing Society POS 8605,1352.69,debit,Housing
+Target Outlet,730.28,debit,Shopping
+Kroger POS 8251,114.1,debit,Groceries
+Walgreens - Order 61815,216.67,debit,Medical
+Doctor Clinic #2842,463.15,debit,Medical
+Trader Joe's #5431,89.83,debit,Groceries
+ExxonMobil - Order 54185,71.1,debit,Fuel
+Insurance Co #97,238.53,debit,Insurance
+Spotify POS 2342,65.13,debit,Entertainment
+Bookstore - Order 44768,81.62,debit,Entertainment
+ACME Corp Payroll #3777,42198.7,credit,Income
+Housing Society #2067,1150.74,debit,Housing
+Card Store - Order 69409,238.35,debit,Gifts
+Electric Co POS 5170,274.82,debit,Utilities
+Planet Fitness Online,56.65,debit,Fitness
+Marriott Outlet,812.75,debit,Travel
+Starbucks POS 5728,83.58,debit,Food & Drink
+YMCA - Order 67164,25.01,debit,Fitness
+Delta Airlines - Order 70786,772.32,debit,Travel
+Amazon Gifts POS 7810,180.77,debit,Gifts
+Amazon Online,1107.48,debit,Shopping
+Expedia POS 3945,1126.5,debit,Travel
+Insurance Co #5835,267.04,debit,Insurance
+Insurance Co #6994,219.49,debit,Insurance
+City Hospital - Order 16426,231.08,debit,Medical
+BP POS 7999,47.55,debit,Fuel
+Marriott #3323,266.66,debit,Travel
+Amazon POS 9128,71.25,debit,Shopping
+Electric Co In-Store,295.37,debit,Utilities
+Cafe Nero - Order 51359,89.42,debit,Food & Drink
+Airbnb - Order 89242,575.04,debit,Travel
+Mobil #6237,32.34,debit,Fuel
+AMC - Order 39654,135.16,debit,Entertainment
+Marriott - Order 43679,1490.99,debit,Travel
+ACME Corp Payroll #823,17285.81,credit,Income
+Mobil Branch,80.35,debit,Fuel
+Netflix Outlet,56.51,debit,Entertainment
+Insurance Co #387,88.82,debit,Insurance
+Kroger Online,74.63,debit,Groceries
+Gift Shop - Order 25533,244.96,debit,Gifts
+Loan EMI Bank #60,701.75,debit,Loans
+Big Mart - Order 66155,36.28,debit,Groceries
+Bank Fee POS 3792,146.05,debit,Other
+Misc Vendor - Order 34607,146.52,debit,Other
+Landlord Inc #9894,1418.05,debit,Housing
+Metro Recharge #1512,32.92,debit,Transport
+Loan EMI Bank #3623,130.76,debit,Loans
+Electric Co Branch,248.64,debit,Utilities
+YMCA Online,28.06,debit,Fitness
+Shell - Order 58637 (online),50.17,debit,Fuel
+Cafe Nero - Order 71592,36.08,debit,Food & Drink
+BP Online,79.75,debit,Fuel
+Bookstore POS 2741,43.95,debit,Entertainment
+Texaco POS 6325,45.1,debit,Fuel
+Landlord Inc POS 9501,1511.23,debit,Housing
+Loan EMI Bank - Order 84329,187.05,debit,Loans
+Bookstore POS 1999,86.63,debit,Entertainment
+Life Insurance Payment #4486,392.2,debit,Insurance
+Misc Vendor In-Store,108.66,debit,Other
+Insurance Co POS 2005,135.63,debit,Insurance
+Insurance Co #8386,397.82,debit,Insurance
+AT&T Outlet,275.97,debit,Utilities
+Spotify #1692,63.15,debit,Entertainment
+City Hospital Outlet,493.36,debit,Medical
+Planet Fitness - Order 32514,103.64,debit,Fitness
+Expedia - Order 46591,896.79,debit,Travel
+BestBuy #5221,167.65,debit,Shopping
+Electric Co #5928,201.59,debit,Utilities
+Delta Airlines POS 9015,1104.08,debit,Travel
+Flipkart - Order 98288,290.09,debit,Shopping
+Walgreens #9264 (promo),672.42,debit,Medical
+Walmart In-Store,177.99,debit,Groceries
+Transit Card #9640,42.41,debit,Transport
+Stripe Payout In-Store,19842.87,credit,Income
+Cafe Nero #7810,28.93,debit,Food & Drink
+Loan EMI Bank #3403 (promo),129.41,debit,Loans
+YMCA POS 8872,79.08,debit,Fitness
+Con Edison #8983,157.88,debit,Utilities
+Bookstore Branch,100.58,debit,Entertainment
+Service Charge - Order 64256,82.85,debit,Other
+Insurance Co - Order 68805,159.48,debit,Insurance
+Freelance Upwork #3200,21904.53,credit,Income
+Electric Co POS 1769,287.88,debit,Utilities
+Bank Fee POS 7399,118.05,debit,Other
+McDonald's #2139 REFUND,6.02,credit,Food & Drink
+Gym Membership POS 3409 (online),22.35,debit,Fitness
+Netflix Branch,126.89,debit,Entertainment
+Loan EMI Bank - Order 30119,75.83,debit,Loans
+BestBuy - Order 49223,814.18,debit,Shopping
+Landlord Inc Online,1772.12,debit,Housing
+Misc Vendor - Order 66243,48.4,debit,Other
+Con Edison POS 3535,91.02,debit,Utilities
+ACME Corp Payroll - Order 29601,25580.48,credit,Income
+Freelance Upwork Outlet,41804.42,credit,Income
+ACME Corp Payroll Branch,39623.15,credit,Income
+Gift Shop #4985,81.94,debit,Gifts
+Shell POS 5703,30.83,debit,Fuel
+Landlord Inc POS 3942,1397.1,debit,Housing
+Transit Card Online,57.92,debit,Transport
+AMC Online,37.74,debit,Entertainment
+Expedia Outlet,133.49,debit,Travel
+Housing Society POS 4212,771.49,debit,Housing
+Landlord Inc Online,1094.84,debit,Housing
+Delta Airlines Online,640.51,debit,Travel
+Service Charge #4277,94.49,debit,Other
+Comcast - Order 80513,236.6,debit,Utilities
+Amazon - Order 67342,524.21,debit,Shopping
+Gift Shop #6558,129.49,debit,Gifts
+Auto Loan Payment POS 6918,92.93,debit,Loans
+Misc Vendor In-Store,20.55,debit,Other
+BP - Order 62538 REFUND,94.87,credit,Fuel
+City Taxi #6542,38.38,debit,Transport
+Apple Store #3063,1060.3,debit,Shopping
+Service Charge #9354,87.19,debit,Other
+Con Edison - Order 55069,81.82,debit,Utilities
+Insurance Co In-Store,308.55,debit,Insurance
+Freelance Upwork In-Store,21535.51,credit,Income
+Doctor Clinic - Order 49948,559.73,debit,Medical
+Auto Loan Payment POS 3869,724.97,debit,Loans
+Landlord Inc POS 7181,1717.26,debit,Housing
+Freelance Upwork #6094,50691.0,credit,Income
+Amazon POS 6145,433.15,debit,Shopping
+Planet Fitness Branch,98.11,debit,Fitness
+CVS Pharmacy POS 7566,198.73,debit,Medical
+Card Store Online (vip),177.74,debit,Gifts
+Movie Theater Branch,40.17,debit,Entertainment
+Starbucks - Order 60140,77.63,debit,Food & Drink
+BP Outlet,37.67,debit,Fuel
+ACME Corp Payroll #3320,2393.12,credit,Income
+Amazon POS 6759,172.1,debit,Shopping
+Flipkart - Order 10088,365.73,debit,Shopping
+Metro Recharge #6853,15.41,debit,Transport
+Gift Shop Online,117.38,debit,Gifts
+Gift Shop POS 3483,45.71,debit,Gifts
+McDonald's - Order 82255,62.46,debit,Food & Drink
+Mobil - Order 64732,50.39,debit,Fuel
+Transit Card Branch,156.72,debit,Transport
+Bookstore - Order 64997,119.65,debit,Entertainment
+Life Insurance Payment - Order 34125,23.37,debit,Insurance
+Shell - Order 41797,82.04,debit,Fuel
+Insurance Co - Order 23508,70.27,debit,Insurance
+Domino's - Order 97177,58.49,debit,Food & Drink
+Spotify - Order 64529,156.94,debit,Entertainment
+Life Insurance Payment POS 5509,65.6,debit,Insurance
+ExxonMobil - Order 98008 (recurring),46.64,debit,Fuel
+Metro Recharge #7850,75.6,debit,Transport
+Housing Society In-Store,1930.29,debit,Housing
+Doctor Clinic - Order 49760,89.88,debit,Medical
+Doctor Clinic #653,354.45,debit,Medical
+Walmart Online,159.17,debit,Groceries
+Doctor Clinic #8807,242.98,debit,Medical
+Big Mart #1707,39.54,debit,Groceries
+Expedia - Order 22844,1518.5,debit,Travel
+Texaco In-Store,24.73,debit,Fuel
+Starbucks Online,52.61,debit,Food & Drink
+Apple Store POS 3258,586.57,debit,Shopping
+Housing Society #1944,1904.92,debit,Housing
+City Hospital - Order 78657,307.58,debit,Medical
+City Taxi - Order 19835,13.14,debit,Transport
+Trader Joe's - Order 31319,143.35,debit,Groceries
+Doctor Clinic - Order 21287,713.56,debit,Medical
+Airbnb POS 4276,193.38,debit,Travel
+Planet Fitness POS 2313,41.72,debit,Fitness
+Stripe Payout Branch,33702.18,credit,Income
+Netflix Online,174.82,debit,Entertainment
+AMC - Order 86418,129.47,debit,Entertainment
+Starbucks Outlet,97.44,debit,Food & Drink
+Whole Foods Outlet,93.95,debit,Groceries
+Auto Loan Payment Outlet,116.85,debit,Loans
+Airbnb #2184,7087.51,debit,Travel
+Gym Membership - Order 26276,85.66,debit,Fitness
+Marriott - Order 47593,1710.32,debit,Travel
+Gym Membership #9577,119.11,debit,Fitness
+Uber In-Store,41.33,debit,Transport
+Insurance Co Outlet,243.79,debit,Insurance
+Walmart #2514,123.22,debit,Groceries
+Apple Store #2151 (online),314.29,debit,Shopping
+Service Charge POS 9892,126.92,debit,Other
+City Taxi Online,52.67,debit,Transport
+Auto Loan Payment POS 9043,79.31,debit,Loans
+Freelance Upwork - Order 59947,52161.33,credit,Income
+Insurance Co #9826,43.1,debit,Insurance
+Planet Fitness - Order 77177,26.08,debit,Fitness
+Netflix POS 3725,78.85,debit,Entertainment
+Life Insurance Payment #8456,253.9,debit,Insurance
+Con Edison POS 3018,185.01,debit,Utilities
+Comcast #1536,236.96,debit,Utilities
+Gift Shop In-Store REFUND,172.34,credit,Gifts
+Shell - Order 15798,80.35,debit,Fuel
+Cafe Nero #9434,23.5,debit,Food & Drink
+YMCA POS 6915,103.92,debit,Fitness
+Stripe Payout Branch,40632.31,credit,Income
+McDonald's #4344,78.77,debit,Food & Drink
+Comcast POS 2856,154.13,debit,Utilities
+Kroger - Order 16630,102.27,debit,Groceries
+Loan EMI Bank #4538,459.52,debit,Loans
+ACME Corp Payroll - Order 47287,59608.01,credit,Income
+Subway - Order 59941,75.49,debit,Food & Drink
+Comcast Online,99.19,debit,Utilities
+BP - Order 33392 REFUND (promo),37.82,credit,Fuel
+Loan EMI Bank #1522,191.62,debit,Loans
+Life Insurance Payment - Order 45446,20.53,debit,Insurance
+Movie Theater #5911,152.85,debit,Entertainment
+Loan EMI Bank #7839,766.41,debit,Loans
+City Hospital - Order 66925,680.34,debit,Medical
+Subway #2983,50.78,debit,Food & Drink
+Domino's POS 2210,118.56,debit,Food & Drink
+Lyft #9880,12.69,debit,Transport
+Insurance Co POS 2946,208.32,debit,Insurance
+Target In-Store,324.47,debit,Shopping
+BestBuy #2745,40.08,debit,Shopping
+Lyft - Order 41348,75.88,debit,Transport
+Starbucks In-Store,95.27,debit,Food & Drink
+Lyft #8404,54.92,debit,Transport
+Delta Airlines - Order 80742,427.75,debit,Travel
+Service Charge Branch (recurring),106.98,debit,Other
+Freelance Upwork POS 2467,18818.16,credit,Income
+Olive Garden POS 1996,52.87,debit,Food & Drink
+Starbucks POS 7367,114.08,debit,Food & Drink
