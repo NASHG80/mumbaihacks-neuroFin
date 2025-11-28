@@ -1,0 +1,35 @@
+date,amount,category,merchant
+2025-01-01,-450,Groceries,Big Bazaar
+2025-01-02,-120,Food & Drink,McDonalds
+2025-01-03,-70,Transport,Uber
+2025-01-04,-220,Shopping,Amazon
+2025-01-05,-150,Food & Drink,Dominos
+2025-01-06,20000,Salary,Company Payroll
+2025-01-06,-2000,Rent,House Owner
+2025-01-07,-300,Groceries,D-Mart
+
+2025-01-08,-500,Food & Drink,KFC
+2025-01-08,-150,Transport,Uber
+2025-01-09,-350,Shopping,Amazon
+2025-01-10,-100,Entertainment,Netflix
+2025-01-11,-250,Entertainment,PVR
+2025-01-12,-400,Groceries,Big Bazaar
+
+2025-01-13,-600,Shopping,Nykaa
+2025-01-14,-400,Transport,Ola
+2025-01-15,-200,Food & Drink,Starbucks
+2025-01-15,-150,Groceries,D-Mart
+
+2025-01-16,-350,Food & Drink,McDonalds
+2025-01-17,-500,Shopping,Amazon
+2025-01-17,20000,Salary,Company Payroll
+2025-01-18,-2000,Rent,House Owner
+2025-01-18,-450,Groceries,Big Bazaar
+
+2025-01-19,-700,Entertainment,BookMyShow
+2025-01-20,-250,Transport,Uber
+2025-01-21,-120,Food & Drink,Dominos
+2025-01-22,-350,Groceries,D-Mart
+2025-01-23,-600,Shopping,Amazon
+2025-01-24,-200,Entertainment,Hotstar
+2025-01-25,-150,Food & Drink,KFC
