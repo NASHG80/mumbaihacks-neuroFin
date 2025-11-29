@@ -49,7 +49,7 @@ export default function FamiliesSection() {
             <div className="relative mx-auto max-w-4xl">
               <img
                 ref={mainImgRef}
-                src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/ead26dcf-d38f-4fbf-83b0-9a3e41c618d9_3840w.jpg"
+                src="/Screenshot 2025-11-29 075817.png"
                 alt="Family globe"
                 className="nf-family-main bg-center bg-black/70 w-full h-auto object-cover border-white/12 border rounded-[2rem] shadow-[0_30px_110px_rgba(15,23,42,0.95)]"
                 loading="lazy"
