@@ -1,5 +1,5 @@
-import { motion } from "framer-motion"
-import { Target, Plus, X, Pencil } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Plus, X, TrendingUp, Calendar, Edit2, Trash2, Target, Pencil } from "lucide-react"
 
 import { useState } from "react"
 import { createPortal } from "react-dom"
@@ -8,10 +8,10 @@ const GoalsSection = ({ goals = [], onAddGoal, onDeleteGoal, onUpdateGoal }) => 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   // Default to Premium Blue instead of Neon Cyan
-  const [newGoal, setNewGoal] = useState({ name: '', target: '', current: '', emoji: '🎯', color: '#3b82f6' });
+  const [newGoal, setNewGoal] = useState({ name: '', target: '', current: '', icon: Target, color: '#3b82f6' });
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingGoal, setEditingGoal] = useState(null);
-  const [editGoal, setEditGoal] = useState({ name: '', target: '', current: '', emoji: '🎯', color: '#3b82f6' });
+  const [editGoal, setEditGoal] = useState({ name: '', target: '', current: '', icon: Target, color: '#3b82f6' });
 
   // Premium Fintech Color Palette
   const colorOptions = [
@@ -35,13 +35,13 @@ const GoalsSection = ({ goals = [], onAddGoal, onDeleteGoal, onUpdateGoal }) => 
             name: newGoal.name,
             target: Number(newGoal.target),
             current: Number(newGoal.current) || 0,
-            emoji: newGoal.emoji,
+            icon: newGoal.icon,
             color: newGoal.color
         });
     }
 
     setIsModalOpen(false);
-    setNewGoal({ name: '', target: '', current: '', emoji: '🎯', color: '#3b82f6' });
+    setNewGoal({ name: '', target: '', current: '', icon: Target, color: '#3b82f6' });
   };
 
   const openEditModal = (goal) => {
@@ -51,7 +51,7 @@ const GoalsSection = ({ goals = [], onAddGoal, onDeleteGoal, onUpdateGoal }) => 
       name: goal.name || '',
       target: goal.target ?? '',
       current: goal.current ?? '',
-      emoji: goal.emoji || '🎯',
+      icon: goal.icon || Target,
       color: goal.color || '#3b82f6'
     });
     setIsEditModalOpen(true);
@@ -66,7 +66,7 @@ const GoalsSection = ({ goals = [], onAddGoal, onDeleteGoal, onUpdateGoal }) => 
       name: editGoal.name,
       target: Number(editGoal.target) || 0,
       current: Number(editGoal.current) || 0,
-      emoji: editGoal.emoji,
+      icon: editGoal.icon,
       color: editGoal.color
     });
 
@@ -337,13 +337,12 @@ const GoalsSection = ({ goals = [], onAddGoal, onDeleteGoal, onUpdateGoal }) => 
 
                   {/* Goal Info Overlay */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-10">
-                    <motion.div
-                      animate={{ scale: [1, 1.05, 1] }}
-                      transition={{ duration: 3, repeat: Infinity }}
-                      className="text-3xl mb-2 drop-shadow-md"
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center"
+                      style={{ backgroundColor: `${goal.color}15` }}
                     >
-                      {goal.emoji}
-                    </motion.div>
+                      {goal.icon ? <goal.icon className="w-6 h-6" style={{ color: goal.color }} /> : <Target className="w-6 h-6" style={{ color: goal.color }} />}
+                    </div>
                     <p className="text-sm mb-1 font-medium text-white shadow-black drop-shadow-sm">{goal.name}</p>
                     <p className="text-xs text-white/80 mb-2 font-medium">
                       {Math.round(percentage)}% Complete

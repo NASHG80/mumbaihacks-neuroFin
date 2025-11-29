@@ -1,23 +1,26 @@
 import { motion, AnimatePresence } from "framer-motion"
-import { 
+import {
   Calendar, Shield, TrendingUp, Tv, Music, Zap, ChevronRight, ArrowUpRight, Plus, Box, BrainCircuit, X
 } from "lucide-react"
 import { useState } from "react"
 import { createPortal } from "react-dom"
+import CustomDatePicker from "../CustomDatePicker"
 
 const SubscriptionTracker = ({ subscriptions = [], onAddSubscription }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newSub, setNewSub] = useState({ name: '', category: 'Entertainment', amount: '', date: '', icon: 'Tv' });
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [newSub, setNewSub] = useState({ name: '', category: 'Entertainment', amount: '', date: null, icon: 'Tv' });
+  const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const displaySubs = subscriptions || [];
   const totalUpcoming = displaySubs.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0);
-  
+
   const categories = displaySubs.reduce((acc, curr) => {
     acc[curr.category] = (acc[curr.category] || 0) + (Number(curr.amount) || 0);
     return acc;
   }, {});
-  
-  const sortedCategories = Object.entries(categories).sort(([, a], [, b]) => b - a).slice(0, 3); 
+
+  const sortedCategories = Object.entries(categories).sort(([, a], [, b]) => b - a).slice(0, 3);
 
   const themeStyles = {
     blue: { icon: "text-blue-500", bg: "bg-blue-500/10", border: "border-blue-500/20", gradient: "from-blue-500/20 to-blue-500/5", bar: "bg-blue-500" },
@@ -34,28 +37,28 @@ const SubscriptionTracker = ({ subscriptions = [], onAddSubscription }) => {
   }
 
   const getIcon = (sub) => {
-      if (typeof sub.icon !== 'string') return sub.icon || Zap;
-      const icons = { Tv, Music, Shield, TrendingUp, Zap, Box, BrainCircuit };
-      return icons[sub.icon] || Zap;
+    if (typeof sub.icon !== 'string') return sub.icon || Zap;
+    const icons = { Tv, Music, Shield, TrendingUp, Zap, Box, BrainCircuit };
+    return icons[sub.icon] || Zap;
   }
 
   const handleSubmit = (e) => {
-      e.preventDefault();
-      if(onAddSubscription) {
-          const iconName = newSub.category === 'Investment' ? 'TrendingUp' : newSub.category === 'Insurance' ? 'Shield' : 'Tv';
-          const theme = newSub.category === 'Investment' ? 'emerald' : newSub.category === 'Insurance' ? 'blue' : 'rose';
-          
-          onAddSubscription({
-              id: Date.now(),
-              ...newSub,
-              amount: Number(newSub.amount),
-              theme,
-              icon: iconName, // Send String for backend
-              dueDate: newSub.date // Raw date for backend
-          });
-      }
-      setIsModalOpen(false);
-      setNewSub({ name: '', category: 'Entertainment', amount: '', date: '', icon: 'Tv' });
+    e.preventDefault();
+    if (onAddSubscription) {
+      const iconName = newSub.category === 'Investment' ? 'TrendingUp' : newSub.category === 'Insurance' ? 'Shield' : 'Tv';
+      const theme = newSub.category === 'Investment' ? 'emerald' : newSub.category === 'Insurance' ? 'blue' : 'rose';
+
+      onAddSubscription({
+        id: Date.now(),
+        ...newSub,
+        amount: Number(newSub.amount),
+        theme,
+        icon: iconName, // Send String for backend
+        dueDate: newSub.date ? newSub.date.toISOString() : null // Convert Date to ISO string
+      });
+    }
+    setIsModalOpen(false);
+    setNewSub({ name: '', category: 'Entertainment', amount: '', date: null, icon: 'Tv' });
   }
 
   return (
@@ -71,7 +74,7 @@ const SubscriptionTracker = ({ subscriptions = [], onAddSubscription }) => {
           <h3 className="text-xl font-medium text-white mb-1">Upcoming Payments</h3>
           <p className="text-sm text-zinc-500">SIPs, Renewals & Subscriptions</p>
         </div>
-        <button className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.08] transition-colors group">
+        <button onClick={() => setIsCalendarOpen(true)} className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:bg-white/[0.08] transition-colors group">
           <Calendar className="w-5 h-5 text-zinc-400 group-hover:text-white transition-colors" />
         </button>
       </div>
@@ -88,7 +91,7 @@ const SubscriptionTracker = ({ subscriptions = [], onAddSubscription }) => {
               </span>
             </div>
           </div>
-          <button className="flex items-center gap-1 text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors">
+          <button onClick={() => setIsCalendarOpen(true)} className="flex items-center gap-1 text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors">
             View Calendar <ArrowUpRight className="w-3 h-3" />
           </button>
         </div>
@@ -140,69 +143,147 @@ const SubscriptionTracker = ({ subscriptions = [], onAddSubscription }) => {
       </div>
 
       {/* Spend Distribution Section */}
-<div className="mt-6">
-  <p className="text-[11px] font-medium tracking-wider text-zinc-500 uppercase mb-2">
-    Spend Distribution
-  </p>
+      <div className="mt-6">
+        <p className="text-[11px] font-medium tracking-wider text-zinc-500 uppercase mb-2">
+          Spend Distribution
+        </p>
 
-  {/* Distribution Bar */}
-  <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden flex">
-    {sortedCategories.map(([cat, amt], index) => {
-      const total = totalUpcoming || 1;
-      const width = (amt / total) * 100;
-      return (
-        <div
-          key={index}
-          style={{ width: `${width}%` }}
-          className={`${getCategoryColor(cat)} transition-all`}
-        />
-      );
-    })}
-  </div>
+        {/* Distribution Bar */}
+        <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden flex">
+          {sortedCategories.map(([cat, amt], index) => {
+            const total = totalUpcoming || 1;
+            const width = (amt / total) * 100;
+            return (
+              <div
+                key={index}
+                style={{ width: `${width}%` }}
+                className={`${getCategoryColor(cat)} transition-all`}
+              />
+            );
+          })}
+        </div>
 
-  {/* Labels */}
-  <div className="flex justify-between mt-2 text-[11px] text-zinc-500">
-    {sortedCategories.map(([cat, amt], index) => {
-      const total = totalUpcoming || 1;
-      const pct = Math.round((amt / total) * 100);
-      return (
-        <span key={index} className="text-xs">
-          {cat} ({pct}%)
-        </span>
-      );
-    })}
-  </div>
-</div>
+        {/* Labels */}
+        <div className="flex justify-between mt-2 text-[11px] text-zinc-500">
+          {sortedCategories.map(([cat, amt], index) => {
+            const total = totalUpcoming || 1;
+            const pct = Math.round((amt / total) * 100);
+            return (
+              <span key={index} className="text-xs">
+                {cat} ({pct}%)
+              </span>
+            );
+          })}
+        </div>
+      </div>
 
 
       {/* Footer */}
       <div className="mt-4 pt-4 border-t border-white/[0.06] flex-shrink-0 space-y-4">
         <button onClick={() => setIsModalOpen(true)} className="w-full py-3 rounded-xl border border-dashed border-white/10 text-zinc-400 hover:text-white hover:border-white/20 hover:bg-white/[0.02] transition-all flex items-center justify-center gap-2 text-xs font-medium">
-            <Plus className="w-4 h-4" /> Add New Subscription
+          <Plus className="w-4 h-4" /> Add New Subscription
         </button>
       </div>
 
       {/* Add Modal */}
       {isModalOpen && createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-            <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-[#0A0A0A] border border-white/10 rounded-3xl p-6 w-full max-w-sm shadow-2xl">
-                <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-xl font-medium text-white">Add Subscription</h3>
-                    <button onClick={() => setIsModalOpen(false)} className="text-zinc-500 hover:text-white"><X className="w-5 h-5"/></button>
-                </div>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <input type="text" placeholder="Name (e.g. Netflix)" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500" value={newSub.name} onChange={e => setNewSub({...newSub, name: e.target.value})} required />
-                    <input type="number" placeholder="Amount" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500" value={newSub.amount} onChange={e => setNewSub({...newSub, amount: e.target.value})} required />
-                    <input type="date" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500" value={newSub.date} onChange={e => setNewSub({...newSub, date: e.target.value})} required />
-                    <select className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white outline-none" value={newSub.category} onChange={e => setNewSub({...newSub, category: e.target.value})}>
-                        <option value="Entertainment" className="bg-black">Entertainment</option>
-                        <option value="Insurance" className="bg-black">Insurance</option>
-                        <option value="Investment" className="bg-black">Investment</option>
-                        <option value="Software" className="bg-black">Software</option>
-                    </select>
-                    <button type="submit" className="w-full py-3 rounded-xl bg-white text-black font-bold">Add Subscription</button>
-                </form>
-            </motion.div>
+          <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-[#0A0A0A] border border-white/10 rounded-3xl p-6 w-full max-w-sm shadow-2xl">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-medium text-white">Add Subscription</h3>
+              <button onClick={() => setIsModalOpen(false)} className="text-zinc-500 hover:text-white"><X className="w-5 h-5" /></button>
+            </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input type="text" placeholder="Name (e.g. Netflix)" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500" value={newSub.name} onChange={e => setNewSub({ ...newSub, name: e.target.value })} required />
+              <input type="number" placeholder="Amount" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500" value={newSub.amount} onChange={e => setNewSub({ ...newSub, amount: e.target.value })} required />
+              <CustomDatePicker
+                selected={newSub.date}
+                onChange={(date) => setNewSub({ ...newSub, date })}
+                placeholderText="Select due date"
+                minDate={new Date()}
+                accentColor="blue"
+              />
+              <select className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white outline-none" value={newSub.category} onChange={e => setNewSub({ ...newSub, category: e.target.value })}>
+                <option value="Entertainment" className="bg-black">Entertainment</option>
+                <option value="Insurance" className="bg-black">Insurance</option>
+                <option value="Investment" className="bg-black">Investment</option>
+                <option value="Software" className="bg-black">Software</option>
+              </select>
+              <button type="submit" className="w-full py-3 rounded-xl bg-white text-black font-bold">Add Subscription</button>
+            </form>
+          </motion.div>
+        </div>,
+        document.body
+      )}
+
+      {/* Calendar Modal */}
+      {isCalendarOpen && createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-[#0A0A0A] border border-white/10 rounded-3xl p-6 w-full max-w-md shadow-2xl">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-medium text-white">Subscription Calendar</h3>
+              <button onClick={() => setIsCalendarOpen(false)} className="text-zinc-500 hover:text-white"><X className="w-5 h-5" /></button>
+            </div>
+
+            {/* Calendar Controls */}
+            <div className="flex justify-between items-center mb-4">
+              <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))} className="p-2 hover:bg-white/5 rounded-lg text-zinc-400 hover:text-white">
+                <ChevronRight className="w-5 h-5 rotate-180" />
+              </button>
+              <h4 className="text-lg font-medium text-white">
+                {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+              </h4>
+              <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))} className="p-2 hover:bg-white/5 rounded-lg text-zinc-400 hover:text-white">
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Calendar Grid */}
+            <div className="grid grid-cols-7 gap-2 text-center mb-2">
+              {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => (
+                <div key={d} className="text-xs font-medium text-zinc-500">{d}</div>
+              ))}
+            </div>
+            <div className="grid grid-cols-7 gap-2">
+              {(() => {
+                const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
+                const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
+                const days = [];
+
+                for (let i = 0; i < firstDay; i++) {
+                  days.push(<div key={`empty-${i}`} />);
+                }
+
+                for (let d = 1; d <= daysInMonth; d++) {
+                  const dateStr = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), d).toISOString().split('T')[0];
+                  const subsOnDay = displaySubs.filter(s => {
+                    // Handle both raw date strings and ISO strings
+                    const subDate = s.dueDate ? new Date(s.dueDate).toISOString().split('T')[0] : '';
+                    return subDate === dateStr;
+                  });
+                  const hasSub = subsOnDay.length > 0;
+
+                  days.push(
+                    <div key={d} className={`relative h-10 rounded-xl flex items-center justify-center text-sm font-medium transition-all
+                                ${hasSub ? 'bg-white/10 text-white border border-white/20 shadow-[0_0_10px_rgba(255,255,255,0.1)]' : 'text-zinc-500 hover:bg-white/5 hover:text-zinc-300'}
+                            `}>
+                      {d}
+                      {hasSub && (
+                        <div className="absolute bottom-1 w-1 h-1 rounded-full bg-blue-500" />
+                      )}
+                      {hasSub && (
+                        <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-zinc-800 text-white text-[10px] px-2 py-1 rounded-md opacity-0 hover:opacity-100 pointer-events-none whitespace-nowrap z-20 border border-white/10">
+                          {subsOnDay.map(s => <div key={s.id}>{s.name} - ₹{s.amount}</div>)}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+                return days;
+              })()}
+            </div>
+
+          </motion.div>
         </div>,
         document.body
       )}

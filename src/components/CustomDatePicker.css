@@ -1,0 +1,138 @@
+/* Custom DatePicker Styles for Dark Theme */
+.custom-datepicker-popper {
+  z-index: 9999 !important;
+}
+
+.custom-datepicker-calendar {
+  background-color: #0A0A0A !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 1rem !important;
+  font-family: inherit !important;
+  padding: 1rem !important;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5) !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__header {
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  padding: 0.75rem 0 !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__current-month {
+  color: white !important;
+  font-weight: 500 !important;
+  font-size: 0.95rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__day-names {
+  margin-top: 0.5rem !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__day-name {
+  color: rgba(255, 255, 255, 0.4) !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  width: 2.25rem !important;
+  line-height: 2.25rem !important;
+  margin: 0.15rem !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__day {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 0.875rem !important;
+  width: 2.25rem !important;
+  line-height: 2.25rem !important;
+  margin: 0.15rem !important;
+  border-radius: 0.5rem !important;
+  transition: all 0.2s !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__day:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__day--selected {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%) !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__day--keyboard-selected {
+  background-color: rgba(59, 130, 246, 0.2) !important;
+  color: white !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__day--today {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+  color: #3b82f6 !important;
+  font-weight: 600 !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__day--disabled {
+  color: rgba(255, 255, 255, 0.2) !important;
+  cursor: not-allowed !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__day--disabled:hover {
+  background-color: transparent !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__day--outside-month {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__navigation {
+  top: 1rem !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__navigation-icon::before {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  border-width: 2px 2px 0 0 !important;
+  height: 7px !important;
+  width: 7px !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__navigation:hover .react-datepicker__navigation-icon::before {
+  border-color: white !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__month {
+  margin: 0.5rem 0 0 0 !important;
+}
+
+.custom-datepicker-calendar .react-datepicker__week {
+  display: flex !important;
+  justify-content: space-around !important;
+}
+
+/* Emerald variant */
+.custom-datepicker-calendar.emerald .react-datepicker__day--selected {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+
+.custom-datepicker-calendar.emerald .react-datepicker__day--today {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  color: #10b981 !important;
+}
+
+/* Rose variant */
+.custom-datepicker-calendar.rose .react-datepicker__day--selected {
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%) !important;
+}
+
+.custom-datepicker-calendar.rose .react-datepicker__day--today {
+  background-color: rgba(244, 63, 94, 0.15) !important;
+  color: #f43f5e !important;
+}
+
+/* Amber variant */
+.custom-datepicker-calendar.amber .react-datepicker__day--selected {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+}
+
+.custom-datepicker-calendar.amber .react-datepicker__day--today {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+  color: #f59e0b !important;
+}

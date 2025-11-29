@@ -16,7 +16,8 @@ import {
   Wallet,
   MoreHorizontal,
   ArrowDownLeft,
-  ArrowUpRight
+  ArrowUpRight,
+  Target
 } from "lucide-react"
 import { useState } from "react"
 
@@ -84,12 +85,12 @@ const FamilyFinance = ({ members = [], onAddMember, transactions = [], onAddTran
   const staticSharedGoals = [
     {
       id: 1,
-      name: "Dream House Purchase",
-      target: 5000000,
-      current: 1850000,
+      name: "Family Vacation",
+      target: 150000,
+      current: 85000,
       contributors: ["priya", "rahul"],
       deadline: "2026-12",
-      icon: Home,
+      icon: Target,
       color: "#3b82f6", // Blue
       priority: "high"
     },
@@ -207,7 +208,7 @@ const FamilyFinance = ({ members = [], onAddMember, transactions = [], onAddTran
       name: newGoal.name,
       target: Number(newGoal.target) || 0,
       current: Number(newGoal.current) || 0,
-      emoji: "🎯",
+      icon: Target,
       color: newGoal.color
     }
 

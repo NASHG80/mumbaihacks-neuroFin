@@ -102,8 +102,8 @@ export default function Hero() {
 
             {/* Subtext */}
             <p className="nf-hero-animate text-lg text-neutral-300 max-w-xl">
-              NueroFin is your personal AI Money Copilot for India.  
-              Connect UPI handles, cards, bank accounts and goals into one live workspace —  
+              NueroFin is your personal AI Money Copilot for India.
+              Connect UPI handles, cards, bank accounts and goals into one live workspace —
               then ask NueroFin what to do next.
             </p>
 
@@ -142,7 +142,7 @@ export default function Hero() {
 
               {/* ORIGINAL PHOTO — unchanged */}
               <img
-                src="https://images.pexels.com/photos/6927447/pexels-photo-6927447.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                src="https://utilitymagazine.com.au/wp-content/uploads/2017/10/shutterstock_411063286.jpg"
                 alt="NueroFin dashboard"
                 className="w-full h-[520px] object-cover rounded-3xl"
                 loading="lazy"

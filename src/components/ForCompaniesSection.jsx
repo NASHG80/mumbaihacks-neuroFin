@@ -1,5 +1,7 @@
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef, useState, useEffect } from "react";
 import gsap from "gsap";
+import emailjs from "emailjs-com";
+import { X, Loader2 } from "lucide-react";
 
 const features = [
   {
@@ -42,6 +44,37 @@ export default function ForCompaniesSection() {
   const descRef = useRef(null);
   const cardsRef = useRef([]);
   const ctaRef = useRef(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const formRef = useRef(null);
+
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init("eW9Ky_pSMQyl9dfTn");
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      await emailjs.sendForm(
+        "service_zbteh04",
+        "template_i66pknj",
+        formRef.current,
+        "eW9Ky_pSMQyl9dfTn"
+      );
+      alert("Message sent successfully! We'll be in touch.");
+      setIsModalOpen(false);
+      formRef.current.reset();
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      alert("Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -186,6 +219,7 @@ export default function ForCompaniesSection() {
             <div className="mt-4 flex items-center gap-3">
               <button
                 ref={ctaRef}
+                onClick={() => setIsModalOpen(true)}
                 className="relative inline-flex items-center gap-3 px-5 py-3 rounded-full bg-emerald-500 text-black font-semibold shadow-[0_8px_30px_rgba(16,185,129,0.12)] hover:scale-[1.02] transition"
               >
                 Book a demo
@@ -201,7 +235,10 @@ export default function ForCompaniesSection() {
                 </svg>
               </button>
 
-              <button className="text-sm px-4 py-2 rounded-md border border-white/8 text-gray-200 hover:bg-white/3 transition">
+              <button 
+                onClick={() => setIsModalOpen(true)}
+                className="text-sm px-4 py-2 rounded-md border border-white/8 text-gray-200 hover:bg-white/3 transition"
+              >
                 Contact sales
               </button>
             </div>
@@ -233,6 +270,76 @@ export default function ForCompaniesSection() {
           integrations.
         </div>
       </div>
+
+      {/* CONTACT MODAL */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div 
+            className="bg-[#0F212B] border border-white/10 rounded-2xl w-full max-w-md p-6 shadow-2xl relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <h3 className="text-2xl font-semibold mb-1">Get in touch</h3>
+            <p className="text-sm text-gray-400 mb-6">Fill out the form below and our team will get back to you.</p>
+
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1">Company Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:border-emerald-500 focus:outline-none transition-colors"
+                  placeholder="Acme Corp"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1">Email Address</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:border-emerald-500 focus:outline-none transition-colors"
+                  placeholder="john@example.com"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-1">Message</label>
+                <textarea
+                  name="message"
+                  required
+                  rows="4"
+                  className="w-full bg-black/20 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:border-emerald-500 focus:outline-none transition-colors resize-none"
+                  placeholder="Tell us about your requirements..."
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 mt-2"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  "Send Message"
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
