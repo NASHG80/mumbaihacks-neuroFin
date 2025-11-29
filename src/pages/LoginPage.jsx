@@ -1,53 +1,52 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import gsap from "gsap";
 import emailjs from "emailjs-com";
 
-export default function SignupPage() {
+export default function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const containerRef = useRef(null);
   const cardRef = useRef(null);
+  const overlayRef = useRef(null);
+
   const formRefs = useRef([]);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [generatedOtp, setGeneratedOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   // --- ANIMATIONS ---
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.to(".glow-orb-signup", {
-        scale: 1.2,
-        duration: 8,
+      gsap.to(".glow-orb", {
+        y: -40,
+        duration: 5,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
+        stagger: 1.5,
       });
 
       gsap.fromTo(
         cardRef.current,
-        { opacity: 0, y: 40, rotateX: 10 },
-        { opacity: 1, y: 0, rotateX: 0, duration: 1.4, ease: "power3.out" }
+        { opacity: 0, y: 30, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "power3.out" }
       );
 
       gsap.fromTo(
         formRefs.current,
-        { opacity: 0, x: -20 },
+        { opacity: 0, y: 20 },
         {
           opacity: 1,
-          x: 0,
+          y: 0,
           duration: 0.8,
-          stagger: 0.08,
-          delay: 0.5,
+          stagger: 0.1,
+          delay: 0.4,
           ease: "power2.out",
         }
       );
@@ -56,12 +55,19 @@ export default function SignupPage() {
     return () => ctx.revert();
   }, []);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  // --- SPOTLIGHT EFFECT ---
+  const handleMouseMove = (e) => {
+    if (!cardRef.current || !overlayRef.current) return;
+    const { left, top } = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - left;
+    const y = e.clientY - top;
+
+    overlayRef.current.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(125, 95, 255, 0.15) 0%, transparent 100%)`;
+    overlayRef.current.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(125, 95, 255, 0.15) 0%, transparent 100%)`;
   };
 
   const sendOtp = async () => {
-    if (!formData.email) {
+    if (!email) {
       setError("Please enter your email first");
       return;
     }
@@ -72,14 +78,18 @@ export default function SignupPage() {
 
     // Calculate expiration time (15 minutes from now)
     const expirationTime = new Date(Date.now() + 15 * 60 * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    console.log("IDHAR HUN MEIN");
+
     try {
-      await emailjs.send("service_zbteh04", "template_znh5c1q", {
-        passcode: code,
-        time: expirationTime,
-        email: formData.email,
-        name: formData.name,
-      }, "eW9Ky_pSMQyl9dfTn");
+      await emailjs.send(
+        "service_zbteh04", "template_znh5c1q",
+        {
+          passcode: code,
+          time: expirationTime,
+          email: email,
+          name: "User",
+        },
+        "eW9Ky_pSMQyl9dfTn"
+      );
       setOtpSent(true);
       setError("");
       alert("OTP sent to your email!");
@@ -92,16 +102,10 @@ export default function SignupPage() {
   };
 
   // --- BACKEND INTEGRATION ---
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     setError("");
     setLoading(true);
-
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      setLoading(false);
-      return;
-    }
 
     if (!otpSent) {
       setError("Please verify your email with OTP first");
@@ -116,43 +120,30 @@ export default function SignupPage() {
     }
 
     try {
-      // Ensure we are using the correct relative path that Vite proxies
-      const res = await fetch("/api/auth/signup", {
+      // CHANGED: Used relative path
+      const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password
-        }),
+        body: JSON.stringify({ email, password }),
       });
 
-      // Handle non-JSON responses gracefully
+      // Handle non-JSON responses
       const contentType = res.headers.get("content-type");
       let data;
       if (contentType && contentType.indexOf("application/json") !== -1) {
         data = await res.json();
       } else {
-        // If the response is not JSON, it's likely an error page from the server (500, 404, etc.)
-        // We throw an error to be caught by the catch block
-        const text = await res.text();
-        throw new Error(`Server error: ${res.status} ${res.statusText}`);
+        throw new Error("Server returned a non-JSON response.");
       }
 
       if (!res.ok) {
-        setError(data.message || "Signup failed");
+        setError(data.message || "Login failed");
         gsap.fromTo(cardRef.current, { x: -10 }, { x: 10, duration: 0.1, repeat: 5, yoyo: true });
       } else {
-        // SUCCESS: Store token and user data
-        if (data.token) {
-          localStorage.setItem("nf_token", data.token);
-          localStorage.setItem("nf_user", JSON.stringify(data.user));
-          // After signup, go to card details first
-          navigate("/subscribe");
-        } else {
-          // Fallback: If for some reason token isn't returned on signup, redirect to login
-          navigate("/login");
-        }
+        localStorage.setItem("nf_token", data.token);
+        localStorage.setItem("nf_user", JSON.stringify(data.user));
+        // After login, always go to card details flow first
+        navigate("/dashboard", { replace: true });
       }
     } catch (err) {
       console.error(err);
@@ -160,151 +151,131 @@ export default function SignupPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
     <main
       ref={containerRef}
-      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-[#05050A] text-white px-4 py-12"
+      onMouseMove={handleMouseMove}
+      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-[#05050A] text-white px-4"
     >
-      {/* --- BACKGROUND FX --- */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="glow-orb-signup absolute top-[20%] right-[20%] w-[500px] h-[500px] bg-[#7d5fff]/15 blur-[140px] rounded-full" />
-        <div className="glow-orb-signup absolute bottom-[10%] left-[10%] w-[600px] h-[600px] bg-[#6dcffc]/10 blur-[140px] rounded-full" />
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="glow-orb absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-[#6dcffc]/20 blur-[120px] rounded-full mix-blend-screen" />
+        <div className="glow-orb absolute bottom-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#7d5fff]/20 blur-[120px] rounded-full mix-blend-screen" />
       </div>
 
-      {/* --- CARD --- */}
       <div
         ref={cardRef}
-        className="relative w-full max-w-[460px] rounded-[2.5rem] border border-white/10 bg-black/60 backdrop-blur-3xl shadow-[0_20px_80px_rgba(0,0,0,0.6)]"
+        className="relative w-full max-w-[420px] rounded-[2rem] border border-white/10 bg-black/40 backdrop-blur-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden group"
       >
-        {/* Top Accent Light */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[2px] bg-gradient-to-r from-transparent via-white/50 to-transparent blur-[2px]"></div>
+        <div
+          ref={overlayRef}
+          className="absolute inset-0 pointer-events-none transition-opacity duration-500 opacity-0 group-hover:opacity-100"
+        />
 
-        <div className="p-8 sm:p-12">
-          {/* Header */}
-          <div className="mb-8">
-            <p ref={el => formRefs.current[0] = el} className="text-[#6dcffc] text-xs font-bold tracking-[0.2em] mb-2">
-              NUEROFIN ID
-            </p>
-            <h1 ref={el => formRefs.current[1] = el} className="text-3xl sm:text-4xl font-light text-white tracking-tight">
-              Create your <br /> Money OS.
+        <div className="relative z-10 p-8 sm:p-10 space-y-8">
+
+          <div className="text-center space-y-2">
+            <div ref={(el) => (formRefs.current[0] = el)} className="inline-block mb-2">
+              <div className="h-10 w-10 mx-auto bg-gradient-to-br from-white/20 to-white/5 rounded-xl border border-white/20 flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-white/90">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+            </div>
+            <h1 ref={(el) => (formRefs.current[1] = el)} className="text-3xl font-light tracking-tight text-white">
+              Welcome back
             </h1>
+            <p ref={(el) => (formRefs.current[2] = el)} className="text-sm text-neutral-400">
+              Enter your coordinates to access the OS.
+            </p>
           </div>
 
-          {/* Error Message */}
           {error && (
-            <div className="mb-6 text-xs text-red-400 bg-red-500/10 border border-red-500/20 p-3 rounded-lg text-center">
+            <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 p-3 rounded-lg text-center">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
 
-            {/* Name */}
-            <div ref={el => formRefs.current[2] = el} className="group space-y-1">
-              <label className="text-[10px] font-semibold text-neutral-500 tracking-wider ml-3">FULL NAME</label>
-              <input
-                name="name"
-                type="text"
-                required
-                placeholder="Aditya Sharma"
-                onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-sm text-white placeholder:text-neutral-700 outline-none focus:border-white/30 focus:bg-white/10 transition-all"
-              />
-            </div>
-
-            {/* Email */}
-            <div ref={el => formRefs.current[3] = el} className="group space-y-1">
-              <label className="text-[10px] font-semibold text-neutral-500 tracking-wider ml-3">WORK OR PERSONAL EMAIL</label>
-              <input
-                name="email"
-                type="email"
-                required
-                placeholder="aditya@company.com"
-                onChange={handleChange}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-sm text-white placeholder:text-neutral-700 outline-none focus:border-white/30 focus:bg-white/10 transition-all"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              {/* Password */}
-              <div ref={el => formRefs.current[4] = el} className="group space-y-1">
-                <label className="text-[10px] font-semibold text-neutral-500 tracking-wider ml-3">khufiya CODE</label>
+            <div ref={(el) => (formRefs.current[3] = el)} className="group/input space-y-1.5">
+              <label className="text-xs font-medium text-neutral-500 ml-1 group-focus-within/input:text-[#6dcffc] transition-colors">
+                EMAIL
+              </label>
+              <div className="relative">
                 <input
-                  name="password"
-                  type="password"
+                  type="email"
                   required
-                  placeholder="••••••"
-                  onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-sm text-white placeholder:text-neutral-700 outline-none focus:border-white/30 focus:bg-white/10 transition-all"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@nuerofin.in"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder:text-neutral-600 outline-none focus:border-[#6dcffc]/50 focus:bg-white/10 transition-all duration-300 focus:shadow-[0_0_20px_rgba(109,207,252,0.15)]"
                 />
               </div>
-              {/* Confirm */}
-              <div ref={el => formRefs.current[5] = el} className="group space-y-1">
-                <label className="text-[10px] font-semibold text-neutral-500 tracking-wider ml-3">CONFIRM</label>
+            </div>
+
+            <div ref={(el) => (formRefs.current[4] = el)} className="group/input space-y-1.5">
+              <div className="flex items-center justify-between ml-1">
+                <label className="text-xs font-medium text-neutral-500 group-focus-within/input:text-[#7d5fff] transition-colors">
+                  PASSWORD
+                </label>
+                <Link to="/auth/forgot-password" className="text-xs text-neutral-500 hover:text-white transition-colors">
+                  Forgot?
+                </Link>
+              </div>
+              <div className="relative">
                 <input
-                  name="confirmPassword"
                   type="password"
                   required
-                  placeholder="••••••"
-                  onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-sm text-white placeholder:text-neutral-700 outline-none focus:border-white/30 focus:bg-white/10 transition-all"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder:text-neutral-600 outline-none focus:border-[#7d5fff]/50 focus:bg-white/10 transition-all duration-300 focus:shadow-[0_0_20px_rgba(125,95,255,0.15)]"
                 />
               </div>
             </div>
 
             {/* OTP Section */}
             {otpSent && (
-              <div className="group space-y-1">
-                <label className="text-[10px] font-semibold text-neutral-500 tracking-wider ml-3">ENTER OTP</label>
-                <input
-                  name="otp"
-                  type="text"
-                  required
-                  placeholder="123456"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-sm text-white placeholder:text-neutral-700 outline-none focus:border-white/30 focus:bg-white/10 transition-all"
-                />
+              <div className="group/input space-y-1.5">
+                <label className="text-xs font-medium text-neutral-500 ml-1 group-focus-within/input:text-[#6dcffc] transition-colors">
+                  OTP
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    required
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    placeholder="123456"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder:text-neutral-600 outline-none focus:border-[#6dcffc]/50 focus:bg-white/10 transition-all duration-300 focus:shadow-[0_0_20px_rgba(109,207,252,0.15)]"
+                  />
+                </div>
               </div>
             )}
 
-            {/* Action Button */}
-            <div ref={el => formRefs.current[6] = el} className="pt-4">
+            <div ref={(el) => (formRefs.current[5] = el)} className="pt-2">
               <button
                 type="button"
                 onClick={otpSent ? handleSubmit : sendOtp}
                 disabled={loading}
-                className="relative w-full group overflow-hidden rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 p-[1px] focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
+                className="relative w-full group overflow-hidden rounded-xl bg-white text-black font-semibold py-3.5 text-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                <div className="relative rounded-full bg-black/50 backdrop-blur-md px-8 py-4 transition-all duration-300 group-hover:bg-transparent">
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="text-sm font-semibold text-white tracking-wide">
-                      {loading ? "Processing..." : otpSent ? "Verify & Signup" : "Send OTP"}
-                    </span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="transition-transform group-hover:translate-x-1">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </div>
-                </div>
-                {/* Internal Shine */}
-                <div className="absolute inset-0 -translate-x-full group-hover:animate-[shineSweep_1s_ease-in-out] bg-white/20 blur-md" />
+                <span className="relative z-10">{loading ? "Authenticating..." : otpSent ? "Log In" : "Send OTP"}</span>
+                <div className="absolute inset-0 -translate-x-full group-hover:animate-[shineSweep_1s_ease-in-out] bg-gradient-to-r from-transparent via-white/40 to-transparent" />
               </button>
             </div>
           </form>
 
-          {/* Footer Link */}
-          <div ref={el => formRefs.current[7] = el} className="mt-8 text-center">
-            <p className="text-xs text-neutral-500">
-              Already part of the cohort?{" "}
-              <Link to="/login" className="text-[#6dcffc] hover:text-white transition-colors font-medium">
-                Log in here
-              </Link>
-            </p>
-          </div>
 
+
+          <p ref={(el) => (formRefs.current[8] = el)} className="text-center text-xs text-neutral-500">
+            New to Nuerofin?{" "}
+            <Link to="/signup" className="text-white hover:underline underline-offset-4 decoration-neutral-500">
+              Create account
+            </Link>
+          </p>
         </div>
       </div>
     </main>
