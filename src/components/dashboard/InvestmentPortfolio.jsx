@@ -412,20 +412,7 @@ const InvestmentPortfolio = () => {
               -2% risk, +1.2% stability.
             </p>
             <div className="flex gap-3 mt-4">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-4 py-2 rounded-lg bg-violet-600 text-white text-xs font-medium hover:bg-violet-500 transition-colors"
-              >
-                Apply Suggestion
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium text-zinc-300 transition-colors"
-              >
-                Learn More
-              </motion.button>
+           
             </div>
           </div>
         </div>

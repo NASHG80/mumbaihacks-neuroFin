@@ -641,12 +641,7 @@ const FamilyFinance = ({ members = [], onAddMember, transactions = [], onAddTran
                     </div>
                   </div>
                   <div className="flex gap-3">
-                    <button className="flex-1 md:flex-none px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs md:text-sm hover:bg-white/10 flex items-center justify-center gap-2 text-zinc-300">
-                        <Wallet className="w-3 h-3 md:w-4 md:h-4" /> Set Budget
-                    </button>
-                    <button className="flex-1 md:flex-none px-4 py-2 rounded-xl bg-white text-black text-xs md:text-sm font-medium hover:bg-zinc-200 transition-colors">
-                        View Analytics
-                    </button>
+                    
                   </div>
                 </div>
                 
