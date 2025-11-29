@@ -32,11 +32,11 @@ export default function GiveDetails() {
     return "";
   }
 
-const brandLogos = {
-  Visa: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg",
-  Mastercard: "https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png",
-  Rupay: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/RuPay.svg/383px-RuPay.svg.png?20200901070738"
-};
+  const brandLogos = {
+    Visa: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg",
+    Mastercard: "https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png",
+    Rupay: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/RuPay.svg/383px-RuPay.svg.png?20200901070738"
+  };
 
   function formatCardNumber(value) {
     return value
@@ -46,56 +46,56 @@ const brandLogos = {
       .trim();
   }
 
-function detectAll(numRaw) {
-  const num = numRaw.replace(/\s/g, "");
+  function detectAll(numRaw) {
+    const num = numRaw.replace(/\s/g, "");
 
-  if (num.length < 4) {
-    setBrand("Unknown");
-    setBank("");
-    setLogoUrl("");
-    setGlow("");
-    return;
+    if (num.length < 4) {
+      setBrand("Unknown");
+      setBank("");
+      setLogoUrl("");
+      setGlow("");
+      return;
+    }
+
+    let detectedBrand = "Unknown";
+    let glowClass = "";
+    let brandLogo = "";
+
+    // BRAND DETECTION (India accurate RuPay)
+    if (/^4/.test(num)) {
+      detectedBrand = "Visa";
+      brandLogo = brandLogos.Visa;
+      glowClass = "shadow-[0_0_40px_rgba(30,144,255,0.35)]";
+
+    } else if (/^5[1-5]/.test(num)) {
+      detectedBrand = "Mastercard";
+      brandLogo = brandLogos.Mastercard;
+      glowClass = "shadow-[0_0_40px_rgba(255,120,20,0.35)]";
+
+    } else if (/^(508|606|607|608|652)/.test(num)) {
+      detectedBrand = "Rupay";
+      brandLogo = brandLogos.Rupay;
+      glowClass = "shadow-[0_0_40px_rgba(0,200,120,0.35)]";
+    }
+
+    // BANK DETECTION
+    // BANK DETECTION
+    let detectedBank = detectBank(num);
+    let detectedBankLogo = "";
+
+    if (detectedBank && bankLogos[detectedBank]) {
+      detectedBankLogo = bankLogos[detectedBank];
+    } else {
+      detectedBankLogo = ""; // fallback
+    }
+
+    setBank(detectedBank);
+    setBankLogoUrl(detectedBankLogo);
+    setBrand(detectedBrand);
+    setGlow(glowClass);
+    setLogoUrl(brandLogo);
+
   }
-
-  let detectedBrand = "Unknown";
-  let glowClass = "";
-  let brandLogo = "";
-
-  // BRAND DETECTION (India accurate RuPay)
-  if (/^4/.test(num)) {
-    detectedBrand = "Visa";
-    brandLogo = brandLogos.Visa;
-    glowClass = "shadow-[0_0_40px_rgba(30,144,255,0.35)]";
-
-  } else if (/^5[1-5]/.test(num)) {
-    detectedBrand = "Mastercard";
-    brandLogo = brandLogos.Mastercard;
-    glowClass = "shadow-[0_0_40px_rgba(255,120,20,0.35)]";
-
-  } else if (/^(508|606|607|608|652)/.test(num)) {
-    detectedBrand = "Rupay";
-    brandLogo = brandLogos.Rupay;
-    glowClass = "shadow-[0_0_40px_rgba(0,200,120,0.35)]";
-  }
-
-  // BANK DETECTION
-  // BANK DETECTION
-let detectedBank = detectBank(num);
-let detectedBankLogo = "";
-
-if (detectedBank && bankLogos[detectedBank]) {
-  detectedBankLogo = bankLogos[detectedBank];
-} else {
-  detectedBankLogo = ""; // fallback
-}
-
-setBank(detectedBank);
-setBankLogoUrl(detectedBankLogo);
-setBrand(detectedBrand);
-setGlow(glowClass);
-setLogoUrl(brandLogo);
-
-}
 
 
   useEffect(() => {
@@ -173,26 +173,26 @@ setLogoUrl(brandLogo);
               >
                 <div className="flex justify-between items-start">
                   {bankLogoUrl ? (
-  <img
-    src={bankLogoUrl}
-    alt="bank-logo"
-    className="h-8 w-auto max-w-[120px] object-contain drop-shadow-lg"
-  />
-) : (
-  <div className="w-20 h-6 bg-white/10 rounded"></div>
-)}
+                    <img
+                      src={bankLogoUrl}
+                      alt="bank-logo"
+                      className="h-8 w-auto max-w-[120px] object-contain drop-shadow-lg"
+                    />
+                  ) : (
+                    <div className="w-20 h-6 bg-white/10 rounded"></div>
+                  )}
 
-{logoUrl ? (
-  <img
-    src={logoUrl}
-    alt="brand-logo"
-    className="h-10 w-auto max-w-[150px] object-contain drop-shadow-lg"
+                  {logoUrl ? (
+                    <img
+                      src={logoUrl}
+                      alt="brand-logo"
+                      className="h-10 w-auto max-w-[150px] object-contain drop-shadow-lg"
 
 
-  />
-) : (
-  <div className="w-20 h-6 bg-white/10 rounded"></div>
-)}
+                    />
+                  ) : (
+                    <div className="w-20 h-6 bg-white/10 rounded"></div>
+                  )}
                 </div>
 
                 <div className="tracking-widest text-2xl font-mono text-center">
@@ -304,10 +304,21 @@ setLogoUrl(brandLogo);
                   body: JSON.stringify(cardData)
                 });
 
-                if (res.ok) navigate("/dashboard");
-                else console.error("Error saving card");
+                if (res.ok) {
+                  navigate("/dashboard");
+                } else {
+                  if (res.status === 401) {
+                    alert("Session expired. Please login again.");
+                    navigate("/login");
+                  } else {
+                    alert("Error saving card details. Proceeding to dashboard.");
+                    navigate("/dashboard");
+                  }
+                }
               } catch (err) {
                 console.error(err);
+                alert("Network error. Proceeding to dashboard.");
+                navigate("/dashboard");
               }
             }}
           >

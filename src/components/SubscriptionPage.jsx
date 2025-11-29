@@ -20,52 +20,52 @@ export default function SubscriptionPage() {
   }, []);
 
   // 🔥 Razorpay Payment Function
-const handleBuy = async () => {
-  try {
-    setLoading(true);
+  const handleBuy = async () => {
+    try {
+      setLoading(true);
 
-    // 1️⃣ create order on backend
-   const res = await fetch("http://localhost:5000/api/razorpay/create-order", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-});
+      // 1️⃣ create order on backend
+      const res = await fetch("http://localhost:5000/api/razorpay/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
 
-    const order = await res.json();
+      const order = await res.json();
 
-    if (!order.id) {
-      alert("Order error. Try again.");
-      return;
+      if (!order.id) {
+        alert("Order error. Try again.");
+        return;
+      }
+
+      // 2️⃣ open Razorpay checkout
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY, // 👈 now loaded correctly
+        amount: order.amount,
+        currency: order.currency,
+        name: "NueroFin",
+        description: "Founding Year Subscription",
+        order_id: order.id,
+
+        handler: function (response) {
+          console.log("PAYMENT SUCCESS:", response);
+          localStorage.setItem("nf_payment_id", response.razorpay_payment_id);
+          window.location.href = "/details";
+        },
+
+        theme: {
+          color: "#4F46E5",
+        },
+      };
+
+      const razor = new window.Razorpay(options);
+      razor.open();
+    } catch (err) {
+      console.error(err);
+      alert("Payment failed");
+    } finally {
+      setLoading(false);
     }
-
-    // 2️⃣ open Razorpay checkout
-  const options = {
-  key: import.meta.env.VITE_RAZORPAY_KEY, // 👈 now loaded correctly
-  amount: order.amount,
-  currency: order.currency,
-  name: "NueroFin",
-  description: "Founding Year Subscription",
-  order_id: order.id,
-
-  handler: function (response) {
-    console.log("PAYMENT SUCCESS:", response);
-    localStorage.setItem("nf_token", response.razorpay_payment_id);
-    window.location.href = "/dashboard";
-  },
-
-  theme: {
-    color: "#4F46E5",
-  },
-};
-
-    const razor = new window.Razorpay(options);
-    razor.open();
-  } catch (err) {
-    console.error(err);
-    alert("Payment failed");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
   return (
     <section
       ref={secRef}

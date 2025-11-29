@@ -518,6 +518,7 @@ export default function DashboardPage() {
     { id: "analytics", label: "Analytics", icon: TrendingUp },
     { id: "family", label: "Family", icon: Users },
     { id: "insights", label: "AI Insights", icon: Brain },
+    { id: "chatbot", label: "Chatbot", icon: MessageSquareText },
   ];
   return (
     <div ref={containerRef} className="min-h-screen bg-[#050505] text-white overflow-x-hidden relative pb-40 lg:pb-0">
@@ -574,7 +575,13 @@ export default function DashboardPage() {
                     key={item.id}
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setActiveView(item.id)}
+                    onClick={() => {
+                      if (item.id === "chatbot") {
+                        navigate("/assistant");
+                      } else {
+                        setActiveView(item.id);
+                      }
+                    }}
                     className="relative px-6 py-3 rounded-2xl transition-all overflow-hidden group"
                   >
                     {isActive && (
