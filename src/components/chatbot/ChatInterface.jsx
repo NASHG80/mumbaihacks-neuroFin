@@ -134,40 +134,40 @@ export function ChatPanel() {
             <p className="text-xs text-gray-400">Ask anything about finances or taxes</p>
           </motion.div>
 
-          {/* MAIN CHAT AREA */}
-          <div className="flex-1 flex flex-col relative min-w-0 bg-[#00010D]">
+      {/* MAIN CHAT AREA */}
+      <div className="flex-1 flex flex-col relative min-w-0 bg-[#00010D]">
 
-            {/* Mobile Header */}
-            <div className="lg:hidden flex items-center justify-between p-4 border-b border-white/10 bg-black/50 backdrop-blur-md">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-[#3BF7FF]" />
-                <span className="font-medium">NeuroFin Assistant</span>
-              </div>
-              <button onClick={() => setShowMobileSidebar(true)} className="p-2">
-                <Menu className="w-6 h-6" />
-              </button>
-            </div>
-
-            {/* Chat Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex-1 overflow-y-auto custom-scrollbar scroll-smooth"
-            >
-              <ChatPanel />
-            </motion.div>
+        {/* Mobile Header */}
+        <div className="lg:hidden flex items-center justify-between p-4 border-b border-white/10 bg-black/50 backdrop-blur-md">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-[#3BF7FF]" />
+            <span className="font-medium">NeuroFin Assistant</span>
           </div>
+          <button onClick={() => setShowMobileSidebar(true)} className="p-2">
+            <Menu className="w-6 h-6" />
+          </button>
+        </div>
 
-          {/* RIGHT SIDEBAR (Desktop) */}
-          <motion.div
-            initial={{ x: 50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-            className="hidden lg:block w-80 border-l border-white/5 overflow-y-auto custom-scrollbar bg-[#05050A]"
-          >
-            <QuickActionsPanel />
-          </motion.div>
+        {/* Chat Content */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex-1 overflow-y-auto custom-scrollbar scroll-smooth"
+        >
+          <ChatPanel />
+        </motion.div>
+      </div>
+
+      {/* RIGHT SIDEBAR (Desktop) */}
+      <motion.div
+        initial={{ x: 50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+        className="hidden lg:block w-80 border-l border-white/5 overflow-y-auto custom-scrollbar bg-[#05050A]"
+      >
+        <QuickActionsPanel />
+      </motion.div>
 
           {/* Typing Indicator */}
           {loading && (
