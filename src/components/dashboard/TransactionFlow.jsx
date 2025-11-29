@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowUpRight, ArrowDownLeft, Zap, Plus, X } from "lucide-react"
 import { useState } from "react"
+import { formatCurrency } from "../../utils/currencyFormatter"
 
 const TransactionFlow = ({ transactions = [], onAddTransaction }) => {
   const [filter, setFilter] = useState("all")
@@ -168,7 +169,7 @@ const TransactionFlow = ({ transactions = [], onAddTransaction }) => {
               </div>
               <p className="text-xs text-zinc-500 font-medium uppercase tracking-wide">Total Income</p>
             </div>
-            <p className="text-3xl mb-1 font-medium text-white">₹{(totalIncome / 1000).toFixed(0)}k</p>
+            <p className="text-3xl mb-1 font-medium text-white">{formatCurrency(totalIncome)}</p>
             <p className="text-xs text-emerald-500">
               {displayTransactions.filter(t => t.type === "income").length}{" "}
               transactions
@@ -191,7 +192,7 @@ const TransactionFlow = ({ transactions = [], onAddTransaction }) => {
               <p className="text-xs text-zinc-500 font-medium uppercase tracking-wide">Total Expense</p>
             </div>
             <p className="text-3xl mb-1 font-medium text-white">
-              ₹{(totalExpense / 1000).toFixed(0)}k
+              {formatCurrency(totalExpense)}
             </p>
             <p className="text-xs text-rose-500">
               {displayTransactions.filter(t => t.type === "expense").length}{" "}

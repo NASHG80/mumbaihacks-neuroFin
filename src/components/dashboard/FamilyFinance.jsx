@@ -20,6 +20,7 @@ import {
   Target
 } from "lucide-react"
 import { useState } from "react"
+import { formatCurrency } from "../../utils/currencyFormatter"
 
 const FamilyFinance = ({ members = [], onAddMember, transactions = [], onAddTransaction, onUpdateTransaction, onDeleteMember, goals = [], onAddGoal }) => {
   const [selectedMember, setSelectedMember] = useState("priya")
@@ -500,7 +501,7 @@ const FamilyFinance = ({ members = [], onAddMember, transactions = [], onAddTran
                 <motion.div className="p-4 md:p-6 rounded-2xl bg-white/[0.03] border border-white/[0.08] relative overflow-hidden">
                   <div className="relative">
                     <p className="text-xs md:text-sm text-zinc-500 mb-1 md:mb-2 font-medium">Total Income</p>
-                    <p className="text-xl md:text-3xl mb-1 md:mb-2 text-white font-medium">₹{(totalFamilyIncome / 1000).toFixed(0)}k</p>
+                    <p className="text-xl md:text-3xl mb-1 md:mb-2 text-white font-medium">{formatCurrency(totalFamilyIncome)}</p>
                     <div className="flex items-center gap-1 text-[10px] md:text-xs text-emerald-500">
                       <TrendingUp className="w-3 h-3" /> <span>+8.5%</span>
                     </div>
@@ -509,7 +510,7 @@ const FamilyFinance = ({ members = [], onAddMember, transactions = [], onAddTran
                 <motion.div className="p-4 md:p-6 rounded-2xl bg-white/[0.03] border border-white/[0.08] relative overflow-hidden">
                   <div className="relative">
                     <p className="text-xs md:text-sm text-zinc-500 mb-1 md:mb-2 font-medium">Total Savings</p>
-                    <p className="text-xl md:text-3xl mb-1 md:mb-2 text-white font-medium">₹{(totalFamilySavings / 1000).toFixed(0)}k</p>
+                    <p className="text-xl md:text-3xl mb-1 md:mb-2 text-white font-medium">{formatCurrency(totalFamilySavings)}</p>
                     <div className="flex items-center gap-1 text-[10px] md:text-xs text-amber-500">
                       <Star className="w-3 h-3" /> <span>{familyHealthScore}% rate</span>
                     </div>
@@ -583,11 +584,11 @@ const FamilyFinance = ({ members = [], onAddMember, transactions = [], onAddTran
                         <div className="space-y-1.5 md:space-y-2">
                           <div className="flex justify-between text-[10px] md:text-xs">
                             <span className="text-zinc-500">Income</span>
-                            <span style={{ color: member.color }}>₹{(member.contribution / 1000).toFixed(0)}k</span>
+                            <span style={{ color: member.color }}>{formatCurrency(member.contribution)}</span>
                           </div>
                           <div className="flex justify-between text-[10px] md:text-xs">
                             <span className="text-zinc-500">Savings</span>
-                            <span className="text-blue-400">₹{(member.savings / 1000).toFixed(0)}k</span>
+                            <span className="text-blue-400">{formatCurrency(member.savings)}</span>
                           </div>
                         </div>
                         <div className="mt-3 md:mt-4 h-1 md:h-1.5 bg-zinc-800 rounded-full overflow-hidden">
@@ -641,7 +642,12 @@ const FamilyFinance = ({ members = [], onAddMember, transactions = [], onAddTran
                     </div>
                   </div>
                   <div className="flex gap-3">
-                    
+                    <button className="flex-1 md:flex-none px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs md:text-sm hover:bg-white/10 flex items-center justify-center gap-2 text-zinc-300">
+                        <Wallet className="w-3 h-3 md:w-4 md:h-4" /> Set Budget
+                    </button>
+                    <button className="flex-1 md:flex-none px-4 py-2 rounded-xl bg-white text-black text-xs md:text-sm font-medium hover:bg-zinc-200 transition-colors">
+                        View Analytics
+                    </button>
                   </div>
                 </div>
                 
@@ -752,7 +758,7 @@ const FamilyFinance = ({ members = [], onAddMember, transactions = [], onAddTran
                                   </div>
                                   <div>
                                      <h4 className="text-sm font-medium text-white">{goal.name}</h4>
-                                     <p className="text-xs text-zinc-500">Target: ₹{(goal.target/100000).toFixed(1)}L</p>
+                                     <p className="text-xs text-zinc-500">Target: {formatCurrency(goal.target)}</p>
                                   </div>
                                </div>
                                <span className="text-xs px-2 py-1 rounded bg-white/5 text-zinc-400">{goal.priority}</span>

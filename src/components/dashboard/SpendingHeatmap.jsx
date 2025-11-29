@@ -10,6 +10,7 @@ import {
 } from "recharts"
 import { TrendingUp, Sparkles } from "lucide-react"
 import { useState } from "react"
+import { formatCurrency } from "../../utils/currencyFormatter"
 
 const SpendingHeatmap = () => {
   const [selectedPeriod, setSelectedPeriod] = useState(null)
@@ -38,7 +39,7 @@ const SpendingHeatmap = () => {
         >
           <p className="text-xs text-zinc-500 mb-2">{data.period}</p>
           <p className="text-emerald-400 text-lg font-medium mb-1">
-            ₹{(data.value / 100000).toFixed(2)}L
+            {formatCurrency(data.value)}
           </p>
           <p className="text-xs text-zinc-400">
             +{data.growth}% growth
@@ -86,7 +87,7 @@ const SpendingHeatmap = () => {
             Current Net Worth
           </p>
           <p className="text-3xl font-medium text-white">
-            ₹{(currentNetWorth / 100000).toFixed(2)}L
+            {formatCurrency(currentNetWorth)}
           </p>
         </motion.div>
         <motion.div
@@ -101,7 +102,7 @@ const SpendingHeatmap = () => {
           <div className="flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-emerald-500" />
             <p className="text-3xl font-medium text-white">
-              ₹{(forecastData[6].value / 100000).toFixed(2)}L
+              {formatCurrency(forecastData[6].value)}
             </p>
           </div>
           <p className="text-xs text-emerald-400 mt-2">
@@ -143,7 +144,7 @@ const SpendingHeatmap = () => {
             <YAxis
               stroke="rgba(255,255,255,0.2)"
               style={{ fontSize: "12px" }}
-              tickFormatter={value => `₹${(value / 100000).toFixed(1)}L`}
+              tickFormatter={value => formatCurrency(value)}
             />
             <Tooltip
               content={<CustomTooltip />}
@@ -200,7 +201,7 @@ const SpendingHeatmap = () => {
                 />
               </div>
               <p className="text-xl font-medium text-white">
-                ₹{(milestone.value / 100000).toFixed(2)}L
+                {formatCurrency(milestone.value)}
               </p>
             </motion.div>
           ))}

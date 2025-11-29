@@ -10,6 +10,7 @@ import {
 } from "recharts"
 import { AlertCircle, Coffee, ShoppingBag, Home, Car } from "lucide-react"
 import { useState } from "react"
+import { formatCurrency } from "../../utils/currencyFormatter"
 
 const SpendingGraph = () => {
   const [hoveredPoint, setHoveredPoint] = useState(null)
@@ -177,7 +178,7 @@ const SpendingGraph = () => {
             <YAxis
               stroke="rgba(255,255,255,0.2)"
               style={{ fontSize: "12px" }}
-              tickFormatter={value => `₹${(value / 1000).toFixed(0)}k`}
+              tickFormatter={value => formatCurrency(value)}
             />
             <Tooltip
               content={<CustomTooltip />}

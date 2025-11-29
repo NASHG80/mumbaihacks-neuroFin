@@ -20,6 +20,7 @@ import {
   EyeOff
 } from "lucide-react"
 import { useState } from "react"
+import { formatCurrency } from "../../utils/currencyFormatter"
 
 const InvestmentPortfolio = () => {
   const [showReturns, setShowReturns] = useState(true)
@@ -94,7 +95,7 @@ const InvestmentPortfolio = () => {
         >
           <p className="text-sm font-medium text-white mb-2">{data.name}</p>
           <p className="text-xs text-zinc-400 mb-1">
-            Investment: ₹{(data.value / 1000).toFixed(0)}k
+            Investment: {formatCurrency(data.value)}
           </p>
           <p className="text-xs text-zinc-400 mb-1">
             Allocation: {data.allocation}%
@@ -118,7 +119,7 @@ const InvestmentPortfolio = () => {
             {payload[0].payload.month}
           </p>
           <p className="text-sm text-blue-400 font-medium">
-            ₹{(payload[0].value / 100000).toFixed(2)}L
+            {formatCurrency(payload[0].value)}
           </p>
         </motion.div>
       )
@@ -168,7 +169,7 @@ const InvestmentPortfolio = () => {
             <DollarSign className="w-5 h-5 text-blue-500" />
             <p className="text-sm text-zinc-500 font-medium">Total Value</p>
           </div>
-          <p className="text-2xl font-medium text-white">₹{(totalInvestment / 100000).toFixed(2)}L</p>
+          <p className="text-2xl font-medium text-white">{formatCurrency(totalInvestment)}</p>
         </motion.div>
 
         {/* Total Returns - Emerald */}
@@ -188,7 +189,7 @@ const InvestmentPortfolio = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-2xl font-medium text-emerald-500"
           >
-            {showReturns ? `+₹${(totalReturns / 1000).toFixed(0)}k` : "••••••"}
+            {showReturns ? `+${formatCurrency(totalReturns)}` : "••••••"}
           </motion.p>
         </motion.div>
 
@@ -277,7 +278,7 @@ const InvestmentPortfolio = () => {
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               <p className="text-xs text-zinc-500 mb-1">Total Portfolio</p>
               <p className="text-2xl font-medium text-white">
-                ₹{(totalInvestment / 100000).toFixed(1)}L
+                {formatCurrency(totalInvestment)}
               </p>
             </div>
           </motion.div>
@@ -305,7 +306,7 @@ const InvestmentPortfolio = () => {
                   <span className="text-sm text-zinc-300">{item.name}</span>
                 </div>
                 <div className="text-right flex items-center gap-3">
-                  <p className="text-sm font-medium text-white">₹{(item.value / 1000).toFixed(0)}k</p>
+                  <p className="text-sm font-medium text-white">{formatCurrency(item.value)}</p>
                   <p className="text-xs text-zinc-500 w-8 text-right">{item.allocation}%</p>
                 </div>
               </motion.div>
@@ -351,7 +352,7 @@ const InvestmentPortfolio = () => {
                 <YAxis
                   stroke="rgba(255,255,255,0.2)"
                   style={{ fontSize: "12px" }}
-                  tickFormatter={value => `₹${(value / 100000).toFixed(1)}L`}
+                  tickFormatter={value => formatCurrency(value)}
                   tickLine={false}
                   axisLine={false}
                 />
@@ -412,7 +413,20 @@ const InvestmentPortfolio = () => {
               -2% risk, +1.2% stability.
             </p>
             <div className="flex gap-3 mt-4">
-           
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="px-4 py-2 rounded-lg bg-violet-600 text-white text-xs font-medium hover:bg-violet-500 transition-colors"
+              >
+                Apply Suggestion
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium text-zinc-300 transition-colors"
+              >
+                Learn More
+              </motion.button>
             </div>
           </div>
         </div>
