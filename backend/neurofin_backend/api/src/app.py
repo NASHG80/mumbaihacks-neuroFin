@@ -11,9 +11,10 @@ sys.path.append(ROOT)
 
 import os
 from flask import Flask, jsonify
-from routes.advice_route import bp_advice
-from routes.health_score_route import bp_health
-from routes.voice_answer_route import bp_voice_answer
+from api.src.routes.advice_route import bp_advice
+from api.src.routes.health_score_route import bp_health
+from api.src.routes.voice_answer_route import bp_voice_answer
+from api.src.routes.forecast_route import bp_forecast
 
 
 
@@ -31,6 +32,7 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 app.register_blueprint(bp_advice, url_prefix="/api/v1")
 app.register_blueprint(bp_health, url_prefix="/api/v1")
 app.register_blueprint(bp_voice_answer, url_prefix="/api/v1")
+app.register_blueprint(bp_forecast, url_prefix="/api/forecast")
 
 
 

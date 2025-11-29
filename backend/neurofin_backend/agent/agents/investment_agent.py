@@ -1,62 +1,89 @@
-from pymongo import MongoClient
-import os
-from api.src.memory import get_user_profile, fix_mongo_ids
+from collections import defaultdict
+import numpy as np
 
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-DB = MongoClient(MONGO_URI)["neurofin"]
+def parse_ts(ts):
+    if isinstance(ts, dict) and "$date" in ts:
+        ts = ts["$date"]
+    try:
+        return ts
+    except:
+        return None
 
-transactions = DB["transactions"]
 
+def investment_agent(collection):
+    try:
+        doc = collection.find_one()
+        if not doc or "months" not in doc:
+            return {
+                "summary": "No data",
+                "allocations": [],
+                "performance": [],
+                "risk_score": 0,
+                "risk_level": "LOW",
+                "total_value": 0
+            }
 
-def investment_agent(user_id: str):
-    """
-    Returns simple, safe investment suggestions:
-    - SIP recommendations
-    - emergency fund guidance
-    - diversification tips
-    """
+        months = doc["months"]
 
-    profile = get_user_profile(user_id)
+        category_totals = defaultdict(float)
+        monthly_totals = {}
 
-    risk = profile.get("risk_level", "medium").lower()
-    salary = profile.get("salary", 25000)  # fallback
+        # -------------------------------------------
+        # READ DATA SAFELY
+        # -------------------------------------------
+        for month, arr in months.items():
+            monthly_sum = 0
+            for t in arr:
+                amt = float(t.get("amount", 0))
+                merchant = t.get("merchant", "Other")
 
-    # Determine recommendation set
-    if risk == "low":
-        portfolio = [
-            "40% → Liquid / Overnight Funds",
-            "30% → Short-Term Debt Funds",
-            "20% → Index Funds",
-            "10% → Gold ETF"
+                category_totals[merchant] += amt
+                monthly_sum += amt
+
+            monthly_totals[month] = monthly_sum
+
+        total_value = sum(category_totals.values())
+
+        # -------------------------------------------
+        # ALLOCATIONS
+        # -------------------------------------------
+        allocations = []
+        for merchant, amt in category_totals.items():
+            alloc = (amt / total_value * 100) if total_value else 0
+            allocations.append({
+                "name": merchant,
+                "value": amt,
+                "allocation": round(alloc, 2),
+                "returns": round((amt % 8000) / 120, 2)  # safe mock
+            })
+
+        # -------------------------------------------
+        # PERFORMANCE
+        # -------------------------------------------
+        performance = [
+            {"month": m, "value": v}
+            for m, v in monthly_totals.items()
         ]
-    elif risk == "high":
-        portfolio = [
-            "60% → Equity Index Funds",
-            "20% → Flexi-cap Mutual Funds",
-            "10% → International ETFs",
-            "10% → Gold ETF"
-        ]
-    else:
-        portfolio = [
-            "40% → Index Funds",
-            "25% → Hybrid Funds",
-            "20% → Debt Funds",
-            "15% → Gold ETF"
-        ]
 
-    # Suggest basic SIP amounts from salary
-    sip_amount = round(salary * 0.15, 2)
+        # -------------------------------------------
+        # RISK SCORE
+        # -------------------------------------------
+        risk_score = min(100, int(total_value / 8000))
+        if risk_score < 33:
+            risk_level = "LOW"
+        elif risk_score < 66:
+            risk_level = "MEDIUM"
+        else:
+            risk_level = "HIGH"
 
-    result = {
-        "summary": f"Suggested SIP: {sip_amount}",
-        "recommended_sip_amount": sip_amount,
-        "risk_profile": risk,
-        "portfolio_mix": portfolio,
-        "notes": [
-            "Maintain a 3–6 month emergency fund",
-            "Avoid investing in high-risk assets if short-term goals are pending",
-            "Automate your SIPs to ensure discipline"
-        ],
-    }
+        return {
+            "summary": "ok",
+            "total_value": total_value,
+            "allocations": allocations,
+            "performance": performance,
+            "risk_score": risk_score,
+            "risk_level": risk_level
+        }
 
-    return fix_mongo_ids(result)
+    except Exception as e:
+        return {"error": str(e)}

@@ -1,6 +1,6 @@
 import cron from "node-cron";
 import Card from "../models/Card.js";
-import SandboxTransaction from "../models/SandboxTransaction.js";
+import SandboxMonthlyTransaction from "../models/SandboxCardTransaction.js";
 import generateTransactions from "../utils/generateTransactions.js";
 
 async function runSandboxCronTick() {
@@ -15,39 +15,25 @@ async function runSandboxCronTick() {
       const bank = c.bank;
       const cardId = c._id;
 
-      // Check if this card already has transactions
-      const existing = await SandboxTransaction.findOne({ cardNumber });
+      let existing = await SandboxMonthlyTransaction.findOne({ cardNumber });
 
-      // FIRST RUN → 200 (spread across 1 year)
-      // LATER → 10 (cluster near now)
-      const txnCount = existing ? 10 : 200;
+      const txnCount = existing ? 10 : 100;
+      const generated = generateTransactions(cardNumber, txnCount, bank);
 
-      const generated = generateTransactions(
-        cardNumber,
-        txnCount,
-        bank,
-        existing
-          ? { anchorNow: true }
-          : { spreadOverYear: true }
-      );
-
-      // Save each transaction as a separate document
       for (const { monthKey, transaction } of generated) {
-        await SandboxTransaction.create({
-          ...transaction,
-
-          // 🔥 KEY FIX — Python-safe timestamp format
-          timestamp: transaction.timestamp.toISOString(),
-
-          card: cardId,
-          bank,
-          cardNumber,
-          month: monthKey,
-          createdAt: new Date()
-        });
+        await SandboxMonthlyTransaction.findOneAndUpdate(
+          { cardNumber },
+          {
+            $push: { [`months.${monthKey}`]: transaction },
+            updatedAt: new Date(),
+            card: cardId,
+            bank
+          },
+          { upsert: true }
+        );
       }
 
-      console.log(`💾 Inserted ${txnCount} separate txns → ${cardNumber}`);
+      console.log(`💾 Added ${txnCount} txns → ${cardNumber}`);
     }
 
     console.log("✅ Tick Complete");
@@ -59,9 +45,9 @@ async function runSandboxCronTick() {
 export default function startSandboxCron() {
   console.log("⏳ Sandbox Cron Enabled");
 
-  // Run immediately
+  // ⭐ Run Immediately
   runSandboxCronTick();
 
-  // Run every 30 minutes
+  // ⭐ Schedule Every 30 min
   cron.schedule("*/30 * * * *", runSandboxCronTick);
 }

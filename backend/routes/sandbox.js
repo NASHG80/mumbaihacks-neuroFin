@@ -1,5 +1,5 @@
 import express from "express";
-import SandboxCardTransaction from "../models/SandboxTransaction.js";
+import SandboxCardTransaction from "../models/SandboxCardTransaction.js";
 
 const router = express.Router();
 
@@ -7,7 +7,7 @@ router.get("/:cardNumber", async (req, res) => {
   try {
     const { cardNumber } = req.params;
 
-    const data = await SandboxTransaction.findOne({ cardNumber });
+    const data = await SandboxCardTransaction.findOne({ cardNumber });
 
     res.json(data || { cardNumber, transactions: [] });
   } catch (err) {
@@ -16,4 +16,3 @@ router.get("/:cardNumber", async (req, res) => {
 });
 
 export default router;
-

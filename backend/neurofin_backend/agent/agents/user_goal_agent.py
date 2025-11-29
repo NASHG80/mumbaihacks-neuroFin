@@ -1,45 +1,54 @@
 from pymongo import MongoClient
 import os
-import datetime
+from api.src.memory import fix_mongo_ids
+from datetime import datetime
 
-# ---- MongoDB Setup ----
+
+# -----------------------------------
+# MongoDB Connection
+# -----------------------------------
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-MONGO_DB = os.getenv("MONGO_DB", "neurofin")
+DB = MongoClient(MONGO_URI)["neurofin"]
 
-client = MongoClient(MONGO_URI)
-db = client[MONGO_DB]
-
-memory_goals = db["memory_goals"]
+memory_goals = DB["memory_goals"]
 
 
-def get_user_goal_summary(user_id: str):
+def get_user_goal_summary(user_id=None):
     """
-    Summarizes user's financial goals stored in MongoDB.
-    Used by the advisor agent.
+    Unified Goal Summary:
+    - Works with or without user_id
+    - Fixes ObjectId to string
+    - Used by advisor_agent
     """
 
-    goals = list(memory_goals.find({"user_id": user_id}))
+    # If sandbox DB has no user-specific data → return all goals
+    query = {} if user_id is None else {"user_id": user_id}
+
+    goals = list(memory_goals.find(query))
 
     if not goals:
         return {
             "has_goals": False,
             "goal_count": 0,
+            "goals": [],
             "summary": "No financial goals added yet."
         }
 
-    # Format goals
+    # Format clean goal objects
     formatted = []
     for g in goals:
         formatted.append({
-            "title": g.get("title"),
-            "amount": g.get("amount"),
+            "id": str(g.get("_id")),
+            "title": g.get("title", "Untitled Goal"),
+            "amount": g.get("amount", 0),
             "deadline": g.get("deadline"),
-            "created_at": g.get("created_at")
+            "created_at": g.get("created_at"),
+            "status": g.get("status", "active")
         })
 
-    return {
+    return fix_mongo_ids({
         "has_goals": True,
-        "goal_count": len(goals),
+        "goal_count": len(formatted),
         "goals": formatted,
-        "summary": f"You have {len(goals)} financial goal(s) saved."
-    }
+        "summary": f"You have {len(formatted)} financial goal(s)."
+    })

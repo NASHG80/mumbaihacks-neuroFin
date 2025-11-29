@@ -1,0 +1,5 @@
+{
+  "watch": ["."],
+  "ignore": ["sandbox/*", "sandbox/**"],
+  "ext": "js,json"
+}

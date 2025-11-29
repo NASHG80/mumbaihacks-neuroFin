@@ -1,48 +1,54 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
-from agents.router_agent import router_agent
+from pymongo import MongoClient
 import os
-from api.src.memory import load_csv_once
+
+# import blueprints
+from api.src.routes.forecast_route import bp_forecast
+from api.src.routes.investment_route import bp_investment
+from api.src.routes.insights_route import bp_insights
+
+
 
 app = Flask(__name__)
-CORS(app)
+
+# REGISTER BLUEPRINTS WITH /api PREFIX
+app.register_blueprint(bp_forecast, url_prefix="/api/forecast")
+
+app.register_blueprint(bp_investment, url_prefix="/api")
+app.register_blueprint(bp_insights, url_prefix="/api")
+
+# ----------------------------
+# MONGO CONNECTION
+# ----------------------------
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+DB = MongoClient(MONGO_URI)["neurofin"]
 
 
-PORT = int(os.getenv("PORT", 7001))
+# ----------------------------
+# GLOBAL CORS FIX
+# ----------------------------
+@app.before_request
+def allow_cors():
+    if request.method == "OPTIONS":
+        response = jsonify({"status": "ok"})
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+        return response
+    return None
 
 
-@app.route("/agent/ask", methods=["POST"])
-def ask():
-    data = request.json or {}
-    user_id = data.get("user_id")
-    message = data.get("message") or data.get("input")
-
-    if not user_id or not message:
-        return jsonify({"error": "user_id and message required"}), 400
-
-    try:
-        result = router_agent(user_id, message)
-        return jsonify(result), 200
-
-    except Exception as e:
-        return jsonify({
-            "error": "internal_error",
-            "detail": str(e)
-        }), 500
+@app.after_request
+def add_headers(resp):
+    resp.headers["Access-Control-Allow-Origin"] = "*"
+    resp.headers["Access-Control-Allow-Headers"] = "Content-Type"
+    resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    return resp
 
 
-@app.route("/health", methods=["GET"])
-def health():
-    return jsonify({
-        "status": "ok",
-        "agent_router_loaded": True
-    })
-
-
+# ----------------------------
+# RUN SERVER
+# ----------------------------
 if __name__ == "__main__":
-    print("⚡ Loading CSV into MongoDB...")
-    load_csv_once()
-
-    print(f"🚀 Agent running on 0.0.0.0:{PORT}")
-    app.run(host="0.0.0.0", port=PORT)
-
+    print("🚀 Running API backend at http://localhost:7001")
+    app.run(host="0.0.0.0", port=7001, debug=True)

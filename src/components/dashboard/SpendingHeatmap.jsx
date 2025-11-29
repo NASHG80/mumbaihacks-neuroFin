@@ -1,4 +1,4 @@
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 import {
   XAxis,
   YAxis,
@@ -6,49 +6,105 @@ import {
   Tooltip,
   ResponsiveContainer,
   Area,
-  AreaChart
-} from "recharts"
-import { TrendingUp, Sparkles } from "lucide-react"
-import { useState } from "react"
-import { formatCurrency } from "../../utils/currencyFormatter"
+  AreaChart,
+} from "recharts";
+import { TrendingUp, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const SpendingHeatmap = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState(null)
+  const [forecastData, setForecastData] = useState([]);
+  const [currentNetWorth, setCurrentNetWorth] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-  // Forecast data - values will come from backend
-  const forecastData = [
-    { period: "1 Month", value: 350000, growth: 7.6 },
-    { period: "3 Months", value: 385000, growth: 18.3 },
-    { period: "6 Months", value: 425000, growth: 30.5 },
-    { period: "1 Year", value: 520000, growth: 59.7 },
-    { period: "2 Years", value: 680000, growth: 108.9 },
-    { period: "5 Years", value: 1240000, growth: 280.9 },
-    { period: "10 Years", value: 2450000, growth: 652.3 }
-  ]
+  function safeNum(n) {
+    return Number(n) && !isNaN(Number(n)) ? Number(n) : 0;
+  }
 
-  const currentNetWorth = 325472
+  // Fetch forecast from backend
+  useEffect(() => {
+    async function loadForecast() {
+      try {
+        const res = await fetch("http://localhost:7001/api/forecast/run", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: "sandbox" })
+        });
 
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          console.error("Backend returned non-JSON:", await res.text());
+          setLoading(false);
+          return;
+        }
+
+        const data = await res.json();
+        console.log("Forecast result:", data);
+
+        // Map forecast to graph-friendly dataset
+        const oneMonth  = safeNum(data.next_month_total);
+        const threeM    = safeNum(data.three_month_projection);
+        const sixM      = safeNum(oneMonth * 6);
+        const oneYear   = safeNum(data.year_projection);
+        const twoYear   = safeNum(data.year_projection * 2);
+        const fiveYear  = safeNum(data.five_year_projection);
+        const tenYear   = safeNum(data.ten_year_projection);
+
+        const chart = [
+          { period: "1 Month", value: oneMonth },
+          { period: "3 Months", value: threeM },
+          { period: "6 Months", value: sixM },
+          { period: "1 Year", value: oneYear },
+          { period: "2 Years", value: twoYear },
+          { period: "5 Years", value: fiveYear },
+          { period: "10 Years", value: tenYear },
+        ];
+
+        setForecastData(chart);
+        setCurrentNetWorth(oneMonth - threeM / 5);
+
+      } catch (err) {
+        console.error("Forecast fetch FAILED:", err);
+      }
+
+      setLoading(false);
+    }
+
+    loadForecast();
+  }, []);
+
+  // Tooltip UI
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
-      const data = payload[0].payload
+      const d = payload[0].payload;
       return (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="p-4 rounded-xl bg-[#0A0A0A] border border-white/10 shadow-xl"
         >
-          <p className="text-xs text-zinc-500 mb-2">{data.period}</p>
+          <p className="text-xs text-zinc-500 mb-2">{d.period}</p>
           <p className="text-emerald-400 text-lg font-medium mb-1">
-            {formatCurrency(data.value)}
-          </p>
-          <p className="text-xs text-zinc-400">
-            +{data.growth}% growth
+            ₹{(d.value / 100000).toFixed(2)}L
           </p>
         </motion.div>
-      )
+      );
     }
-    return null
-  }
+    return null;
+  };
+
+  if (loading)
+    return (
+      <div className="text-center text-zinc-400 p-6">
+        Loading Forecast…
+      </div>
+    );
+
+  if (!forecastData.length)
+    return (
+      <div className="text-center text-red-400 p-6">
+        No forecast data available.
+      </div>
+    );
 
   return (
     <motion.div
@@ -56,16 +112,13 @@ const SpendingHeatmap = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4 }}
       className="p-8 rounded-3xl bg-[#0A0A0A] border border-white/[0.06]"
-      style={{
-        boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.5)"
-      }}
+      style={{ boxShadow: "0 20px 40px -10px rgba(0,0,0,0.5)", minHeight: 500 }}
     >
+      {/* Header */}
       <div className="flex items-start justify-between mb-8">
         <div>
           <h3 className="text-2xl font-medium text-white mb-2">Wealth Forecast</h3>
-          <p className="text-zinc-500 text-sm">
-            AI-powered projection of your financial future
-          </p>
+          <p className="text-zinc-500 text-sm">AI-powered projection of your financial future</p>
         </div>
         <motion.div
           animate={{ rotate: [0, 360] }}
@@ -75,64 +128,43 @@ const SpendingHeatmap = () => {
         </motion.div>
       </div>
 
-      {/* Current vs Future Stats */}
+      {/* Summary Boxes */}
       <div className="grid grid-cols-2 gap-4 mb-8">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5 }}
-          className="p-5 rounded-2xl bg-blue-500/[0.03] border border-blue-500/10"
-        >
-          <p className="text-xs text-zinc-500 uppercase tracking-wide font-medium mb-2">
-            Current Net Worth
-          </p>
+        <div className="p-5 rounded-2xl bg-blue-500/[0.03] border border-blue-500/10">
+          <p className="text-xs text-zinc-500 uppercase mb-2">Current Net Worth</p>
           <p className="text-3xl font-medium text-white">
             {formatCurrency(currentNetWorth)}
           </p>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.6 }}
-          className="p-5 rounded-2xl bg-emerald-500/[0.03] border border-emerald-500/10"
-        >
-          <p className="text-xs text-zinc-500 uppercase tracking-wide font-medium mb-2">
-            Future at 10Y
-          </p>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-emerald-500/[0.03] border border-emerald-500/10">
+          <p className="text-xs text-zinc-500 uppercase mb-2">Future at 10Y</p>
           <div className="flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-emerald-500" />
             <p className="text-3xl font-medium text-white">
-              {formatCurrency(forecastData[6].value)}
+              ₹{((forecastData[6]?.value ?? 0) / 100000).toFixed(2)}L
             </p>
           </div>
-          <p className="text-xs text-emerald-400 mt-2">
-            +{forecastData[6].growth}% growth
-          </p>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Forecast Chart */}
+      {/* Chart */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.7 }}
-        className="h-[320px] mb-8"
+        className="h-[320px] w-full mb-8 min-h-[300px]"
       >
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
-            data={forecastData}
-            onMouseMove={e => setSelectedPeriod(e.activePayload)}
-          >
+          <AreaChart data={forecastData}>
             <defs>
               <linearGradient id="forecastGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#10b981" stopOpacity={0.4} />
                 <stop offset="100%" stopColor="#10b981" stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="rgba(255,255,255,0.05)"
-            />
+
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
             <XAxis
               dataKey="period"
               stroke="rgba(255,255,255,0.2)"
@@ -144,92 +176,50 @@ const SpendingHeatmap = () => {
             <YAxis
               stroke="rgba(255,255,255,0.2)"
               style={{ fontSize: "12px" }}
-              tickFormatter={value => formatCurrency(value)}
+              tickFormatter={(v) => `₹${(v / 100000).toFixed(1)}L`}
             />
-            <Tooltip
-              content={<CustomTooltip />}
-              cursor={{ stroke: "rgba(255,255,255,0.1)" }}
-            />
+
+            <Tooltip content={<CustomTooltip />} />
+
             <Area
               type="monotone"
               dataKey="value"
               stroke="#10b981"
               strokeWidth={3}
               fill="url(#forecastGradient)"
-              dot={{ 
-                fill: "#10b981", 
-                strokeWidth: 2, 
-                r: 5,
-                stroke: "#0A0A0A"
-              }}
-              activeDot={{
-                r: 8,
+              dot={{
                 fill: "#10b981",
-                strokeWidth: 3,
-                stroke: "#0A0A0A"
+                strokeWidth: 2,
+                r: 5,
+                stroke: "#0A0A0A",
               }}
             />
           </AreaChart>
         </ResponsiveContainer>
       </motion.div>
 
-      {/* Milestone Breakdown */}
+      {/* Milestones */}
       <div>
-        <h4 className="text-xs text-zinc-500 uppercase tracking-wide font-medium mb-4">
-          Key Milestones
-        </h4>
+        <h4 className="text-xs text-zinc-500 uppercase font-medium mb-4">Key Milestones</h4>
         <div className="grid grid-cols-2 gap-3">
-          {[
-            { period: "6 Months", value: forecastData[2].value, color: "#3b82f6" },
-            { period: "1 Year", value: forecastData[3].value, color: "#8b5cf6" },
-            { period: "5 Years", value: forecastData[5].value, color: "#f59e0b" },
-            { period: "10 Years", value: forecastData[6].value, color: "#10b981" }
-          ].map((milestone, index) => (
+          {forecastData.slice(2).map((m, i) => (
             <motion.div
-              key={milestone.period}
+              key={m.period}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9 + index * 0.1 }}
-              whileHover={{ scale: 1.02 }}
-              className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 transition-all cursor-pointer"
+              transition={{ delay: 0.9 + i * 0.1 }}
+              className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06]"
             >
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-xs text-zinc-500 font-medium">{milestone.period}</p>
-                <div 
-                  className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: milestone.color }}
-                />
-              </div>
-              <p className="text-xl font-medium text-white">
-                {formatCurrency(milestone.value)}
+              <p className="text-xs text-zinc-500">{m.period}</p>
+              <p className="text-xl text-white">
+                ₹{(m.value / 100000).toFixed(2)}L
               </p>
             </motion.div>
           ))}
         </div>
       </div>
-
-      {/* AI Insight */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.3 }}
-        className="mt-6 p-5 rounded-2xl bg-emerald-500/[0.05] border border-emerald-500/10"
-      >
-        <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-            <Sparkles className="w-5 h-5 text-emerald-500" />
-          </div>
-          <div>
-            <p className="text-sm font-medium text-emerald-400 mb-2">AI Projection</p>
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              Based on your current savings rate and investment returns, you're on track to achieve 
-              ₹12.4L in 5 years. Increasing monthly contributions by 15% could accelerate this by 8 months.
-            </p>
-          </div>
-        </div>
-      </motion.div>
     </motion.div>
-  )
-}
+  );
+};
 
-export default SpendingHeatmap
+export default SpendingHeatmap;

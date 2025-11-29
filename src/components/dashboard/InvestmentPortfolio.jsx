@@ -1,4 +1,4 @@
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 import {
   PieChart,
   Pie,
@@ -9,8 +9,8 @@ import {
   Line,
   XAxis,
   YAxis,
-  CartesianGrid
-} from "recharts"
+  CartesianGrid,
+} from "recharts";
 import {
   TrendingUp,
   DollarSign,
@@ -18,255 +18,223 @@ import {
   Activity,
   Eye,
   EyeOff
-} from "lucide-react"
-import { useState } from "react"
-import { formatCurrency } from "../../utils/currencyFormatter"
+} from "lucide-react";
+import { useState, useEffect } from "react";
 
 const InvestmentPortfolio = () => {
-  const [showReturns, setShowReturns] = useState(true)
-  const [activeIndex, setActiveIndex] = useState(null)
+  const [showReturns, setShowReturns] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(null);
 
-  // UPDATED PREMIUM PALETTE
-  const portfolioData = [
-    {
-      name: "Equity Funds",
-      value: 850000,
-      color: "#3b82f6", // Royal Blue
-      allocation: 46,
-      returns: 18.5
-    },
-    {
-      name: "Debt Funds",
-      value: 450000,
-      color: "#8b5cf6", // Violet
-      allocation: 24,
-      returns: 7.2
-    },
-    {
-      name: "Gold",
-      value: 200000,
-      color: "#f59e0b", // Amber
-      allocation: 11,
-      returns: 12.8
-    },
-    {
-      name: "Real Estate",
-      value: 250000,
-      color: "#f43f5e", // Rose
-      allocation: 14,
-      returns: 9.5
-    },
-    {
-      name: "Fixed Deposits",
-      value: 100000,
-      color: "#10b981", // Emerald
-      allocation: 5,
-      returns: 6.5
+  const [allocations, setAllocations] = useState([]);
+  const [performance, setPerformance] = useState([]);
+  const [totalValue, setTotalValue] = useState(0);
+  const [riskScore, setRiskScore] = useState(0);
+  const [riskLevel, setRiskLevel] = useState("LOW");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadInvestment() {
+      try {
+        console.log("📡 Fetching investment data…");
+
+        const res = await fetch("http://localhost:7001/api/investment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: "sandbox" }),
+        });
+
+        if (!res.ok) {
+          console.error("❌ Server returned:", res.status);
+          setLoading(false);
+          return;
+        }
+
+        const data = await res.json();
+        console.log("Investment agent response:", data);
+
+        setAllocations(data.allocations || []);
+        setPerformance(data.performance || []);
+        setTotalValue(data.total_value || 0);
+        setRiskLevel(data.risk_level || "LOW");
+        setRiskScore(data.risk_score || 0);
+
+      } catch (err) {
+        console.error("Investment fetch failed:", err);
+      }
+
+      setLoading(false);
     }
-  ]
 
-  const performanceData = [
-    { month: "May", value: 1720000 },
-    { month: "Jun", value: 1755000 },
-    { month: "Jul", value: 1738000 },
-    { month: "Aug", value: 1792000 },
-    { month: "Sep", value: 1815000 },
-    { month: "Oct", value: 1850000 }
-  ]
+    loadInvestment();
+  }, []);
 
-  const totalInvestment = portfolioData.reduce(
-    (sum, item) => sum + item.value,
-    0
-  )
-  const totalReturns = 125000 // Mock data
-  const returnsPercentage = (
-    (totalReturns / (totalInvestment - totalReturns)) *
-    100
-  ).toFixed(2)
+  // ---- LOADING ---------------------------------------------------
+  if (loading) {
+    return (
+      <div className="text-center text-zinc-400 p-6">
+        Loading investment data…
+      </div>
+    );
+  }
 
+  // ---- NO DATA ---------------------------------------------------
+  if (!allocations.length) {
+    return (
+      <div className="text-center text-red-400 p-6">
+        No investment data found.
+      </div>
+    );
+  }
+
+  // ---- TOOLTIP COMPONENTS -----------------------------------------
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
-      const data = payload[0].payload
+      const d = payload[0].payload;
       return (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="p-4 rounded-xl bg-[#0A0A0A] border border-white/10 shadow-2xl"
+          className="p-4 rounded-xl bg-[#0A0A0A] border border-white/10 shadow-xl"
         >
-          <p className="text-sm font-medium text-white mb-2">{data.name}</p>
+          <p className="text-sm font-medium text-white mb-2">{d.name}</p>
           <p className="text-xs text-zinc-400 mb-1">
-            Investment: {formatCurrency(data.value)}
+            Invested: ₹{d.value.toLocaleString()}
           </p>
           <p className="text-xs text-zinc-400 mb-1">
-            Allocation: {data.allocation}%
+            Allocation: {d.allocation}%
           </p>
-          <p className="text-xs text-emerald-400 font-medium">Returns: +{data.returns}%</p>
+          {showReturns && (
+            <p className="text-xs text-emerald-400 font-medium">
+              Returns: +{d.returns}%
+            </p>
+          )}
         </motion.div>
-      )
+      );
     }
-    return null
-  }
+    return null;
+  };
 
   const LineTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
+      const d = payload[0].payload;
       return (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="p-3 rounded-xl bg-[#0A0A0A] border border-white/10 shadow-xl"
         >
-          <p className="text-xs text-zinc-500 mb-1">
-            {payload[0].payload.month}
-          </p>
+          <p className="text-xs text-zinc-500 mb-1">{d.month}</p>
           <p className="text-sm text-blue-400 font-medium">
-            {formatCurrency(payload[0].value)}
+            ₹{(d.value / 100000).toFixed(2)}L
           </p>
         </motion.div>
-      )
+      );
     }
-    return null
-  }
+    return null;
+  };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3 }}
-      // CHANGED: Matte Black
+      transition={{ delay: 0.2 }}
       className="p-8 rounded-3xl bg-[#0A0A0A] border border-white/[0.06]"
     >
+      {/* HEADER */}
       <div className="flex items-start justify-between mb-8">
         <div>
           <h3 className="text-2xl font-medium text-white mb-2">Investment Portfolio</h3>
           <p className="text-zinc-500 text-sm">
-            Asset allocation & performance tracking
+            Based on your real monthly sandbox spending data
           </p>
         </div>
+
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowReturns(!showReturns)}
-          className="p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-zinc-400 hover:text-white"
+          className="p-3 rounded-xl bg-white/5 text-zinc-400 hover:bg-white/10"
         >
-          {showReturns ? (
-            <Eye className="w-5 h-5" />
-          ) : (
-            <EyeOff className="w-5 h-5" />
-          )}
+          {showReturns ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
         </motion.button>
       </div>
 
-      {/* Key Metrics */}
+      {/* STATS ROW */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        {/* Total Value - Blue */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4 }}
-          className="p-5 rounded-2xl bg-blue-500/[0.03] border border-blue-500/10"
-        >
+        {/* TOTAL VALUE */}
+        <div className="p-5 rounded-2xl bg-blue-500/[0.03] border border-blue-500/10">
           <div className="flex items-center gap-2 mb-3">
             <DollarSign className="w-5 h-5 text-blue-500" />
-            <p className="text-sm text-zinc-500 font-medium">Total Value</p>
+            <p className="text-sm text-zinc-500">Total Value</p>
           </div>
-          <p className="text-2xl font-medium text-white">{formatCurrency(totalInvestment)}</p>
-        </motion.div>
+          <p className="text-2xl font-medium text-white">
+            ₹{(totalValue / 100000).toFixed(2)}L
+          </p>
+        </div>
 
-        {/* Total Returns - Emerald */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5 }}
-          className="p-5 rounded-2xl bg-emerald-500/[0.03] border border-emerald-500/10"
-        >
+        {/* RISK SCORE */}
+        <div className="p-5 rounded-2xl bg-emerald-500/[0.03] border border-emerald-500/10">
           <div className="flex items-center gap-2 mb-3">
-            <TrendingUp className="w-5 h-5 text-emerald-500" />
-            <p className="text-sm text-zinc-500 font-medium">Total Returns</p>
+            <Activity className="w-5 h-5 text-emerald-500" />
+            <p className="text-sm text-zinc-500">Risk Score</p>
           </div>
-          <motion.p
-            key={showReturns ? "visible" : "hidden"}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-2xl font-medium text-emerald-500"
-          >
-            {showReturns ? `+${formatCurrency(totalReturns)}` : "••••••"}
-          </motion.p>
-        </motion.div>
+          <p className="text-2xl font-medium text-emerald-500">
+            {riskScore}/100
+          </p>
+        </div>
 
-        {/* Growth Rate - Violet */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.6 }}
-          className="p-5 rounded-2xl bg-violet-500/[0.03] border border-violet-500/10"
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <Activity className="w-5 h-5 text-violet-500" />
-            <p className="text-sm text-zinc-500 font-medium">Growth Rate</p>
-          </div>
-          <motion.p
-            key={showReturns ? "visible" : "hidden"}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-2xl font-medium text-violet-500"
-          >
-            {showReturns ? `+${returnsPercentage}%` : "••••"}
-          </motion.p>
-        </motion.div>
-
-        {/* Target - Amber */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.7 }}
-          className="p-5 rounded-2xl bg-amber-500/[0.03] border border-amber-500/10"
-        >
+        {/* RISK LEVEL */}
+        <div className="p-5 rounded-2xl bg-amber-500/[0.03] border border-amber-500/10">
           <div className="flex items-center gap-2 mb-3">
             <Target className="w-5 h-5 text-amber-500" />
-            <p className="text-sm text-zinc-500 font-medium">Target: 2025</p>
+            <p className="text-sm text-zinc-500">Risk Level</p>
           </div>
-          <p className="text-2xl font-medium text-white">₹25L</p>
-        </motion.div>
+          <p className="text-2xl font-medium text-white">{riskLevel}</p>
+        </div>
+
+        {/* PERFORMANCE TREND */}
+        <div className="p-5 rounded-2xl bg-violet-500/[0.03] border border-violet-500/10">
+          <div className="flex items-center gap-2 mb-3">
+            <TrendingUp className="w-5 h-5 text-violet-500" />
+            <p className="text-sm text-zinc-500">Performance Trend</p>
+          </div>
+          <p className="text-2xl font-medium text-violet-500">
+            {performance.length} months
+          </p>
+        </div>
       </div>
 
+      {/* MAIN CONTENT GRID */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Pie Chart - Asset Allocation */}
+
+        {/* PIE CHART */}
         <div>
-          <h4 className="text-sm text-zinc-500 font-medium uppercase tracking-wide mb-6">Asset Allocation</h4>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.8 }}
-            className="h-[300px] relative"
-          >
+          <h4 className="text-sm text-zinc-500 font-medium uppercase tracking-wide mb-6">
+            Asset Allocation
+          </h4>
+
+          <div className="h-[300px] relative w-full min-w-0">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={portfolioData}
+                  data={allocations}
                   cx="50%"
                   cy="50%"
                   innerRadius={60}
                   outerRadius={100}
                   paddingAngle={4}
                   dataKey="value"
-                  stroke="none" // Clean look
-                  onMouseEnter={(_, index) => setActiveIndex(index)}
+                  stroke="none"
+                  onMouseEnter={(_, i) => setActiveIndex(i)}
                   onMouseLeave={() => setActiveIndex(null)}
                 >
-                  {portfolioData.map((entry, index) => (
+                  {allocations.map((entry, index) => (
                     <Cell
-                      key={`cell-${index}`}
-                      fill={entry.color}
+                      key={index}
+                      fill={`hsl(${index * 50}, 85%, 65%)`}
                       opacity={
                         activeIndex === null || activeIndex === index ? 1 : 0.3
                       }
-                      style={{
-                        filter:
-                          activeIndex === index
-                            ? `drop-shadow(0 0 10px ${entry.color}40)` // Subtle glow
-                            : "none",
-                        transition: "all 0.3s ease"
-                      }}
                     />
                   ))}
                 </Pie>
@@ -274,164 +242,67 @@ const InvestmentPortfolio = () => {
               </PieChart>
             </ResponsiveContainer>
 
-            {/* Center Value */}
+            {/* CENTER LABEL */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <p className="text-xs text-zinc-500 mb-1">Total Portfolio</p>
+              <p className="text-xs text-zinc-500 mb-1">Total</p>
               <p className="text-2xl font-medium text-white">
-                {formatCurrency(totalInvestment)}
+                ₹{(totalValue / 100000).toFixed(1)}L
               </p>
             </div>
-          </motion.div>
-
-          {/* Legend */}
-          <div className="mt-6 space-y-2">
-            {portfolioData.map((item, index) => (
-              <motion.div
-                key={item.name}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.9 + index * 0.05 }}
-                onMouseEnter={() => setActiveIndex(index)}
-                onMouseLeave={() => setActiveIndex(null)}
-                className="flex items-center justify-between p-3 rounded-xl hover:bg-white/[0.03] transition-all cursor-pointer"
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-2.5 h-2.5 rounded-full"
-                    style={{
-                      backgroundColor: item.color,
-                      boxShadow: `0 0 8px ${item.color}40`
-                    }}
-                  />
-                  <span className="text-sm text-zinc-300">{item.name}</span>
-                </div>
-                <div className="text-right flex items-center gap-3">
-                  <p className="text-sm font-medium text-white">{formatCurrency(item.value)}</p>
-                  <p className="text-xs text-zinc-500 w-8 text-right">{item.allocation}%</p>
-                </div>
-              </motion.div>
-            ))}
           </div>
         </div>
 
-        {/* Line Chart - Performance */}
+        {/* LINE CHART */}
         <div>
-          <h4 className="text-sm text-zinc-500 font-medium uppercase tracking-wide mb-6">6-Month Performance</h4>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.8 }}
-            className="h-[300px]"
-          >
+          <h4 className="text-sm text-zinc-500 font-medium uppercase tracking-wide mb-6">
+            Monthly Growth
+          </h4>
+
+          <div className="h-[300px] w-full min-w-0">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={performanceData}>
-                <defs>
-                  <linearGradient
-                    id="performanceGradient"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1"
-                  >
-                    <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.2} />
-                    <stop offset="100%" stopColor="#3b82f6" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="rgba(255,255,255,0.05)"
-                  vertical={false}
-                />
+              <LineChart data={performance}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
                 <XAxis
                   dataKey="month"
                   stroke="rgba(255,255,255,0.2)"
                   style={{ fontSize: "12px" }}
-                  tickLine={false}
-                  axisLine={false}
                 />
                 <YAxis
                   stroke="rgba(255,255,255,0.2)"
                   style={{ fontSize: "12px" }}
-                  tickFormatter={value => formatCurrency(value)}
-                  tickLine={false}
-                  axisLine={false}
+                  tickFormatter={(v) => `₹${(v / 100000).toFixed(1)}L`}
                 />
                 <Tooltip content={<LineTooltip />} />
                 <Line
                   type="monotone"
                   dataKey="value"
-                  stroke="#3b82f6" // Royal Blue
+                  stroke="#3b82f6"
                   strokeWidth={3}
-                  dot={{ fill: "#3b82f6", strokeWidth: 0, r: 4 }}
-                  activeDot={{
-                    r: 6,
-                    strokeWidth: 0,
-                    fill: "#3b82f6",
-                    filter: "drop-shadow(0 0 8px rgba(59, 130, 246, 0.5))"
-                  }}
-                  fill="url(#performanceGradient)"
+                  dot={{ r: 4, fill: "#3b82f6" }}
                 />
               </LineChart>
             </ResponsiveContainer>
-          </motion.div>
-
-          {/* Performance Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2 }}
-            className="mt-6 grid grid-cols-2 gap-4"
-          >
-            <div className="p-4 rounded-xl bg-blue-500/[0.03] border border-blue-500/10">
-              <p className="text-xs text-zinc-500 mb-1">6-Month Growth</p>
-              <p className="text-xl font-medium text-blue-500">+7.56%</p>
-            </div>
-            <div className="p-4 rounded-xl bg-emerald-500/[0.03] border border-emerald-500/10">
-              <p className="text-xs text-zinc-500 mb-1">Best Performer</p>
-              <p className="text-xl font-medium text-emerald-500">Equity +18.5%</p>
-            </div>
-          </motion.div>
+          </div>
         </div>
+
       </div>
 
-      {/* AI Recommendation */}
+      {/* AI INSIGHT */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.3 }}
-        className="mt-8 p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06]"
+        transition={{ delay: 0.3 }}
+        className="mt-6 p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06]"
       >
-        <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center flex-shrink-0 text-violet-500">
-            <Target className="w-5 h-5" />
-          </div>
-          <div>
-            <p className="text-sm font-medium text-violet-400 mb-2">AI Portfolio Rebalancing Suggestion</p>
-            <p className="text-sm text-zinc-400 leading-relaxed">
-              Your equity allocation is optimal. Consider increasing debt
-              allocation by 5% to reduce portfolio volatility. Expected impact:
-              -2% risk, +1.2% stability.
-            </p>
-            <div className="flex gap-3 mt-4">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-4 py-2 rounded-lg bg-violet-600 text-white text-xs font-medium hover:bg-violet-500 transition-colors"
-              >
-                Apply Suggestion
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-medium text-zinc-300 transition-colors"
-              >
-                Learn More
-              </motion.button>
-            </div>
-          </div>
-        </div>
+        <p className="text-sm font-medium text-emerald-400 mb-2">AI Insight</p>
+        <p className="text-sm text-zinc-400 leading-relaxed">
+          Based on your spending patterns, your long-term financial momentum is{" "}
+          <span className="text-emerald-400 font-medium">{riskLevel}</span>.
+          Increasing SIPs and diversifying your investments would strengthen your financial stability.
+        </p>
       </motion.div>
     </motion.div>
-  )
-}
+  );
+};
+
 export default InvestmentPortfolio;

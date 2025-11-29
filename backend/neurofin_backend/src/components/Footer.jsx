@@ -1,0 +1,1 @@
+/* Refer to canvas for full component code. Paste manually due to size constraints. */
