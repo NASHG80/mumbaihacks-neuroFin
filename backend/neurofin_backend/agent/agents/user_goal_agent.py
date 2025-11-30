@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 import os
 from api.src.memory import fix_mongo_ids
-from datetime import datetime
 
 
 # -----------------------------------
@@ -10,21 +9,18 @@ from datetime import datetime
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
 DB = MongoClient(MONGO_URI)["neurofin"]
 
-memory_goals = DB["memory_goals"]
+goals_collection = DB["goals"]   # ✔ FIXED
 
 
 def get_user_goal_summary(user_id=None):
     """
-    Unified Goal Summary:
-    - Works with or without user_id
-    - Fixes ObjectId to string
-    - Used by advisor_agent
+    Correct Goal Summary for new schema.
+    Works for sandbox user or real users.
     """
 
-    # If sandbox DB has no user-specific data → return all goals
     query = {} if user_id is None else {"user_id": user_id}
 
-    goals = list(memory_goals.find(query))
+    goals = list(goals_collection.find(query))
 
     if not goals:
         return {
@@ -34,15 +30,14 @@ def get_user_goal_summary(user_id=None):
             "summary": "No financial goals added yet."
         }
 
-    # Format clean goal objects
     formatted = []
     for g in goals:
         formatted.append({
             "id": str(g.get("_id")),
-            "title": g.get("title", "Untitled Goal"),
+            "title": g.get("title") or g.get("goal") or "Untitled Goal",
             "amount": g.get("amount", 0),
             "deadline": g.get("deadline"),
-            "created_at": g.get("created_at"),
+            "progress": g.get("progress", 0),
             "status": g.get("status", "active")
         })
 

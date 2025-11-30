@@ -10,7 +10,9 @@ bp_forecast = Blueprint("bp_forecast", __name__)
 
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
 DB = MongoClient(MONGO_URI)["neurofin"]
-COL = DB["sandboxtransactions"]
+
+# FIXED ✔
+COL = DB["sandboxmonthlytransactions"]     # ← THIS IS THE CORRECT COLLECTION
 
 
 def parse_ts(ts):
@@ -36,6 +38,7 @@ def compute():
 
     daily = defaultdict(float)
 
+    # flatten "months" from sandboxmonthlytransactions
     for doc in docs:
         months = doc.get("months", {})
         for m, txs in months.items():

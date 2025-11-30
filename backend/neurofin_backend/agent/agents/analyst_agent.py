@@ -1,41 +1,58 @@
 from pymongo import MongoClient
 import numpy as np
-import os
 from datetime import datetime
+import os
 
 # -------------------------------------------------------
 # CONNECT TO SANDBOX COLLECTION
 # -------------------------------------------------------
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
 db = MongoClient(MONGO_URI)["neurofin"]
-
-# IMPORTANT: use your NEW collection
-transactions = db["sandboxmonthlytransactions"]
+collection = db["sandboxmonthlytransactions"]
 
 
-def analyst_agent(user_id=None) -> dict:
+def analyst_agent(user_id=None):
     """
-    Updated Analyst Agent:
-    ✔ Works with sandboxmonthlytransactions
-    ✔ Uses faker schema
-    ✔ Auto-detects categories from merchant + description
-    ✔ Computes weekly, category, and merchant analytics
+    Correct Analyst Agent:
+    ✔ Reads nested monthly transaction schema:
+        doc["months"]["January"] → [tx1, tx2, ...]
+    ✔ Flattens ALL transactions
+    ✔ Computes:
+        - Total spent
+        - Top categories
+        - Weekly insights
+        - Merchant spending
+        - Daily averages
     """
 
-    txs = list(transactions.find({}))  # No user_id filter
+    doc = collection.find_one()
 
-    if not txs:
+    if not doc or "months" not in doc:
         return {
-            "summary": "No transaction data found.",
+            "summary": "No data",
             "total_spent": 0,
             "daily_avg": 0,
             "categories": {},
             "top_spends": [],
             "merchant_summary": {},
-            "weekly": {
-                "Mon": 0, "Tue": 0, "Wed": 0,
-                "Thu": 0, "Fri": 0, "Sat": 0, "Sun": 0
-            }
+            "weekly": {}
+        }
+
+    # Flatten all transactions
+    txs = []
+    for month, arr in doc["months"].items():
+        for t in arr:
+            txs.append(t)
+
+    if not txs:
+        return {
+            "summary": "No transaction entries",
+            "total_spent": 0,
+            "daily_avg": 0,
+            "categories": {},
+            "top_spends": [],
+            "merchant_summary": {},
+            "weekly": {}
         }
 
     # Weekly tracking
@@ -52,19 +69,16 @@ def analyst_agent(user_id=None) -> dict:
         amount = float(t.get("amount", 0))
         tx_type = str(t.get("type", "")).lower()
 
-        # Convert DEBIT/CREDIT to spending amount
+        # Debit = expense, Credit = income (ignored)
         if tx_type == "credit":
-            amt = 0  # credit = money in → not an expense
             continue
-        else:
-            amt = abs(amount)  # debit = spend
 
-        # Merchant
+        amt = abs(amount)
+
         merchant = t.get("merchant", "Unknown")
-
-        # Description-based category inference
         desc = (t.get("description") or "").lower()
 
+        # Category inference
         if "food" in desc or "zomato" in merchant.lower() or "swiggy" in merchant.lower():
             category = "Food"
         elif "fuel" in desc or "petrol" in desc:
@@ -77,34 +91,28 @@ def analyst_agent(user_id=None) -> dict:
             category = "General"
 
         # Timestamp
-        ts = t.get("timestamp")
+        ts_raw = t.get("timestamp")
         try:
-            ts = datetime.fromisoformat(str(ts))
+            ts = datetime.fromisoformat(ts_raw.replace("Z", "").split("+")[0])
         except:
             continue
 
-        weekday = ts.strftime("%a")  # Mon, Tue...
+        weekday = ts.strftime("%a")
+        date_key = ts.strftime("%Y-%m-%d")
 
-        # -------------------------------
-        # UPDATE METRICS
-        # -------------------------------
+        # Accumulate totals
         category_totals[category] = category_totals.get(category, 0) + amt
         merchant_totals[merchant] = merchant_totals.get(merchant, 0) + amt
-
-        date_key = ts.strftime("%Y-%m-%d")
         daily_totals[date_key] = daily_totals.get(date_key, 0) + amt
-
         weekly[weekday] += amt
 
     total_spent = sum(category_totals.values())
-
     daily_avg = float(np.mean(list(daily_totals.values()))) if daily_totals else 0
 
-    # Top 3 categories
     top_spends = sorted(category_totals.items(), key=lambda x: x[1], reverse=True)[:3]
 
     return {
-        "summary": f"Analyzed {len(txs)} sandbox transactions.",
+        "summary": f"Analyzed {len(txs)} transactions.",
         "total_spent": round(total_spent, 2),
         "daily_avg": round(daily_avg, 2),
         "categories": {k: round(v, 2) for k, v in category_totals.items()},

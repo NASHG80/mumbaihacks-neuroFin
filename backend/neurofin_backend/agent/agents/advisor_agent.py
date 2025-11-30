@@ -1,6 +1,6 @@
 import json
 
-# UPDATED IMPORTS
+# Imports
 from agent.agents.analyst_agent import analyst_agent
 from agent.agents.forecast_agent import forecast_agent
 from agent.agents.classifier_agent import classifier_agent
@@ -15,35 +15,46 @@ from api.src.memory import (
 )
 
 
-
-
 def advisor_agent(user_id: str, user_message: str) -> dict:
     """
-    NeuroFin Senior Advisor (UPDATED for new MongoDB schema).
-    Spending-related agents now read from:
-        neurofin.sandboxmonthlytransactions
-    instead of old transactions.
+    NeuroFin Senior Advisor
+    All sub-agents now use sandboxmonthlytransactions.
+    advisor_agent combines memory + analytics + LLM summarization.
     """
 
-    # ----------------------------------------------------------
-    # 1️⃣ Load memory data (Profile + Goals)
-    # ----------------------------------------------------------
+    # ------------------------------------------
+    # 1️⃣ Load persistent memory (ONLY these need fix_mongo_ids)
+    # ------------------------------------------
     profile = fix_mongo_ids(get_user_profile(user_id))
     goals = fix_mongo_ids(get_goals(user_id))
     patterns = fix_mongo_ids(get_spending_pattern(user_id))
 
-    # ----------------------------------------------------------
-    # 2️⃣ UPDATED sub-agents (no longer use user_id)
-    #     They now fetch directly from sandbox DB
-    # ----------------------------------------------------------
-    analyst = fix_mongo_ids(analyst_agent())   # 👈 UPDATED
-    forecast = forecast_agent()                # 👈 UPDATED
-    risk_eval = risk_agent()                   # 👈 UPDATED
-    classifier_stats = classifier_agent()      # 👈 UPDATED
+    # ------------------------------------------
+    # 2️⃣ Sub-agents (DO NOT use fix_mongo_ids)
+    # ------------------------------------------
+    try:
+        analyst = analyst_agent()
+    except:
+        analyst = {"error": "analyst_failed"}
 
-    # ----------------------------------------------------------
-    # 3️⃣ Build LLM reasoning prompt
-    # ----------------------------------------------------------
+    try:
+        forecast = forecast_agent()
+    except:
+        forecast = {"error": "forecast_failed"}
+
+    try:
+        risk_eval = risk_agent()
+    except:
+        risk_eval = {"error": "risk_failed"}
+
+    try:
+        classifier_stats = classifier_agent()
+    except:
+        classifier_stats = {"error": "classifier_failed"}
+
+    # ------------------------------------------
+    # 3️⃣ Build final LLM prompt
+    # ------------------------------------------
     prompt = f"""
 You are NeuroFin’s Senior Financial Advisor AI.
 
@@ -59,10 +70,10 @@ User Goals:
 Spending Pattern Memory:
 {json.dumps(patterns, indent=2)}
 
-Analyst Insights (from real transactions):
+Analyst Insights:
 {json.dumps(analyst, indent=2)}
 
-30-Day Forecast (from sandboxmonthlytransactions):
+30-Day Forecast:
 {json.dumps(forecast, indent=2)}
 
 Risk Assessment:
@@ -79,12 +90,12 @@ Now create a final advisory message:
 4. Personalized Plan — 3 actionable steps
 5. If any danger → One-sentence urgent warning
 
-Tone: empathetic, helpful, concise, and professional.
+Tone: empathetic, helpful, professional.
 """
 
-    # ----------------------------------------------------------
-    # 4️⃣ LLM final message
-    # ----------------------------------------------------------
+    # ------------------------------------------
+    # 4️⃣ Get final AI response
+    # ------------------------------------------
     answer = call_llm(prompt)
 
     return {

@@ -1,15 +1,23 @@
 # agent/agents/insights_agent.py
 
-from api.src.routes.forecast_route import compute as compute_forecast
-
+from agent.agents.forecast_agent import forecast_agent
 from agent.agents.savings_analyzer_agent import savings_analyzer_agent
 from agent.agents.investment_agent import investment_agent
 from agent.agents.analyst_agent import analyst_agent
 
+from pymongo import MongoClient
+import os
 
-# --------------- FORECAST INSIGHT -------------------
+# Mongo for investment_agent input
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+DB = MongoClient(MONGO_URI)["neurofin"]
+SANDBOX = DB["sandboxmonthlytransactions"]
+
+
+# ---------------- FORECAST INSIGHT ----------------
 def insights_from_forecast():
-    fore = compute_forecast()
+    fore = forecast_agent()
+
     trend = fore.get("trend", "STABLE")
     next_month = fore.get("next_month_total", 0)
 
@@ -24,7 +32,10 @@ def insights_from_forecast():
         "icon": "TrendingUp",
         "color": "#10b981",
         "title": "Future Spending Forecast",
-        "description": f"Your spending trend is {trend.lower()}, projected at ₹{int(next_month):,} next month.",
+        "description": (
+            f"Your spending trend is {trend.lower()}, "
+            f"projected at ₹{int(next_month):,} next month."
+        ),
         "impact": impact,
         "confidence": 92,
         "potential": f"₹{int(next_month/12):,}/month risk",
@@ -34,15 +45,15 @@ def insights_from_forecast():
     }
 
 
-# --------------- SAVINGS INSIGHT -------------------
-def insights_from_savings(user_id):
-    sv = savings_analyzer_agent(user_id)
+# ---------------- SAVINGS INSIGHT ----------------
+def insights_from_savings(user_id=None):
+    sv = savings_analyzer_agent()  # updated, no user_id now
     score = int(sv.get("savings_score", 50))
 
     impact = "High" if score < 40 else "Medium" if score < 70 else "Low"
 
     drains = sv.get("drains", [])
-    drain = drains[0] if drains else "entertainment"
+    drain = drains[0] if drains else "general expenses"
 
     return {
         "id": 2,
@@ -52,16 +63,18 @@ def insights_from_savings(user_id):
         "description": f"Your savings score is {score}/100. Major drain: {drain}.",
         "impact": impact,
         "confidence": 88,
-        "potential": f"+₹{int(score * 120):,}/year possible",
+        "potential": f"+₹{int(score * 120):,}/year possible savings",
         "recommendation": "Reduce unnecessary recurring expenses and increase SIPs by 10%.",
         "action": "Improve Savings",
         "tags": ["Savings", "Habits", "Optimization"]
     }
 
 
-# --------------- INVESTMENT INSIGHT -------------------
-def insights_from_investments(user_id):
-    inv = investment_agent(user_id)
+# ---------------- INVESTMENT INSIGHT ----------------
+def insights_from_investments():
+    # investment_agent expects a COLLECTION input
+    inv = investment_agent(SANDBOX)
+
     risk = inv.get("risk_level", "LOW")
 
     impact = "High" if risk == "HIGH" else "Medium" if risk == "MEDIUM" else "Low"
@@ -74,16 +87,16 @@ def insights_from_investments(user_id):
         "description": f"Your portfolio risk level is {risk}.",
         "impact": impact,
         "confidence": 90,
-        "potential": "Risk reduction opportunity",
-        "recommendation": "Rebalance equities and move some allocation to debt funds.",
+        "potential": "Opportunity to rebalance asset allocation",
+        "recommendation": "Shift 10–15% from equity to debt for stability.",
         "action": "Rebalance Portfolio",
         "tags": ["Investment", "Risk", "Portfolio"]
     }
 
 
-# --------------- SPENDING INSIGHT -------------------
-def insights_from_spending(user_id):
-    analysis = analyst_agent(user_id)
+# ---------------- SPENDING INSIGHT ----------------
+def insights_from_spending():
+    analysis = analyst_agent()
     top = analysis.get("top_spends", [])
     cat = top[0]["category"] if top else "miscellaneous"
 
@@ -95,17 +108,18 @@ def insights_from_spending(user_id):
         "description": f"You are overspending in {cat}.",
         "impact": "High",
         "confidence": 95,
-        "potential": "₹5,000–₹12,000 monthly savings",
+        "potential": "₹5,000–₹12,000 monthly savings potential",
         "recommendation": f"Reduce {cat} spending by 10% this month.",
         "action": "Reduce Overspending",
         "tags": ["Spending", "Alert", "Risk"]
     }
 
 
-def insights_agent(user_id):
+# ---------------- MAIN ENTRY ----------------
+def insights_agent(user_id=None):
     return [
         insights_from_forecast(),
-        insights_from_savings(user_id),
-        insights_from_investments(user_id),
-        insights_from_spending(user_id)
+        insights_from_savings(),
+        insights_from_investments(),
+        insights_from_spending()
     ]

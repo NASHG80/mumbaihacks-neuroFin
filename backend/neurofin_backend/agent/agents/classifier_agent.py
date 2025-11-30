@@ -3,36 +3,35 @@ import os
 from collections import defaultdict
 
 # ----------------------------------------------------
-# CONNECT TO NEW SANDBOX COLLECTION
+# CONNECT TO SANDBOX COLLECTION
 # ----------------------------------------------------
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
 db = MongoClient(MONGO_URI)["neurofin"]
-
-transactions = db["sandboxmonthlytransactions"]
+collection = db["sandboxmonthlytransactions"]
 
 
 def classify(description: str, merchant: str = ""):
     """
     Pure rule-based classification.
-    Categorizes based on description + merchant.
+    Based on description and merchant.
     """
 
     desc = (description or "").lower()
     m = (merchant or "").lower()
 
     # ---------------- Food ----------------
-    if any(w in desc for w in ["food", "restaurant", "cafe", "pizza", "burger", "swiggy", "zomato"]) \
-       or any(w in m for w in ["zomato", "swiggy", "dominos"]):
+    if any(w in desc for w in ["food", "restaurant", "cafe", "pizza", "burger", "meal"]) \
+       or any(w in m for w in ["zomato", "swiggy", "dominos", "kfc", "mcd"]):
         return "Food"
 
     # ---------------- Transport ----------------
     if any(w in desc for w in ["uber", "ola", "auto", "train", "bus", "fuel", "petrol", "diesel"]) \
-       or any(w in m for w in ["uber", "ola"]):
+       or any(w in m for w in ["uber", "ola", "rapido"]):
         return "Transport"
 
     # ---------------- Shopping ----------------
     if any(w in desc for w in ["shopping", "store", "clothes", "shoes"]) \
-       or any(w in m for w in ["amazon", "flipkart", "myntra"]):
+       or any(w in m for w in ["amazon", "flipkart", "myntra", "ajio"]):
         return "Shopping"
 
     # ---------------- Housing ----------------
@@ -49,19 +48,32 @@ def classify(description: str, merchant: str = ""):
 
 def classifier_agent(user_id=None):
     """
-    Full classifier agent (UPDATED):
-    ✔ Classifies ALL sandboxmonthlytransactions
-    ✔ Summaries:
-        - Total category spending
-        - Merchant → category mapping
-        - Classified list of transactions
+    Correct Classifier Agent:
+    ✔ Flattens ALL monthly transactions
+    ✔ Detects categories
+    ✔ Builds merchant → category mapping
+    ✔ Returns clean “classified_transactions”
     """
 
-    txs = list(transactions.find({}))  # no user_id filter
+    doc = collection.find_one()
 
-    if not txs:
+    if not doc or "months" not in doc:
         return {
-            "summary": "No transactions found.",
+            "summary": "No data found.",
+            "categories": {},
+            "merchant_categories": {},
+            "classified_transactions": []
+        }
+
+    # ---- Flatten monthly transactions ----
+    all_tx = []
+    for month, arr in doc["months"].items():
+        for t in arr:
+            all_tx.append(t)
+
+    if not all_tx:
+        return {
+            "summary": "No transactions available.",
             "categories": {},
             "merchant_categories": {},
             "classified_transactions": []
@@ -69,22 +81,22 @@ def classifier_agent(user_id=None):
 
     category_totals = defaultdict(float)
     merchant_categories = {}
-    classified_txs = []
+    classified = []
 
-    for t in txs:
-        amount = float(t.get("amount", 0))
-        if t.get("type", "").lower() == "credit":
+    for tx in all_tx:
+        amount = float(tx.get("amount", 0))
+        if tx.get("type", "").lower() == "credit":
             continue  # skip income
 
-        desc = t.get("description", "")
-        merchant = t.get("merchant", "")
+        merchant = tx.get("merchant", "")
+        desc = tx.get("description", "")
 
         cat = classify(desc, merchant)
 
         category_totals[cat] += abs(amount)
         merchant_categories[merchant] = cat
 
-        classified_txs.append({
+        classified.append({
             "merchant": merchant,
             "description": desc,
             "amount": abs(amount),
@@ -92,8 +104,8 @@ def classifier_agent(user_id=None):
         })
 
     return {
-        "summary": "Transactions classified successfully.",
+        "summary": "Classified all transactions successfully.",
         "categories": {k: round(v, 2) for k, v in category_totals.items()},
         "merchant_categories": merchant_categories,
-        "classified_transactions": classified_txs
+        "classified_transactions": classified
     }

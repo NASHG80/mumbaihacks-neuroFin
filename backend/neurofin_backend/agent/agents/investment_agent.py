@@ -1,5 +1,15 @@
 from collections import defaultdict
 import numpy as np
+from pymongo import MongoClient
+import os
+
+# -----------------------------
+# MONGO SETUP
+# -----------------------------
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+DB = MongoClient(MONGO_URI)["neurofin"]
+sandbox_collection = DB["sandboxmonthlytransactions"]
+
 
 def parse_ts(ts):
     if isinstance(ts, dict) and "$date" in ts:
@@ -10,8 +20,13 @@ def parse_ts(ts):
         return None
 
 
-def investment_agent(collection):
+# -----------------------------
+# FIXED INVESTMENT AGENT
+# -----------------------------
+def investment_agent(user_id=None):
     try:
+        collection = sandbox_collection
+
         doc = collection.find_one()
         if not doc or "months" not in doc:
             return {
@@ -54,7 +69,7 @@ def investment_agent(collection):
                 "name": merchant,
                 "value": amt,
                 "allocation": round(alloc, 2),
-                "returns": round((amt % 8000) / 120, 2)  # safe mock
+                "returns": round((amt % 8000) / 120, 2)
             })
 
         # -------------------------------------------

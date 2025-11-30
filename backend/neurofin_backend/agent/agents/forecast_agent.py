@@ -1,31 +1,22 @@
-# agent/agents/forecast_agent.py
-
 from pymongo import MongoClient
 from datetime import datetime
 import numpy as np
 from collections import defaultdict
+from dateutil.parser import parse as smart_parse
 import os
 
-# -------- Mongo Connection --------
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
 DB = MongoClient(MONGO_URI)["neurofin"]
-sandbox_collection = DB["sandboxmonthlytransactions"]
+COL = DB["sandboxmonthlytransactions"]
 
-
-# -------- SAFE TIMESTAMP PARSER --------
 def parse_ts(ts):
     try:
         if isinstance(ts, dict) and "$date" in ts:
             ts = ts["$date"]
-        if isinstance(ts, str):
-            ts = ts.replace("Z", "").split("+")[0]
-            return datetime.fromisoformat(ts)
-        return None
+        return smart_parse(str(ts))
     except:
         return None
 
-
-# -------- SAFE POLYFIT --------
 def safe_polyfit(x, y):
     try:
         return np.polyfit(x, y, 1)
@@ -33,67 +24,42 @@ def safe_polyfit(x, y):
         slope = (y[-1] - y[0]) / max(len(y), 1)
         return slope, y[0]
 
+def forecast_agent():
+    doc = COL.find_one()
+    if not doc or "months" not in doc:
+        return {"summary": "no data"}
 
-# -------- MAIN FORECAST AGENT --------
-def forecast_agent(user_id="sandbox"):
-    try:
-        doc = sandbox_collection.find_one({"user_id": "sandbox"}) \
-              or sandbox_collection.find_one()
+    daily = defaultdict(float)
 
-        if not doc or "months" not in doc:
-            return {
-                "summary": "no data",
-                "trend": "unknown",
-                "next_month_total": 0
-            }
+    for month, txs in doc["months"].items():
+        for tx in txs:
+            ts = parse_ts(tx.get("timestamp"))
+            if not ts:
+                continue
+            amt = abs(float(tx.get("amount") or 0))
+            key = ts.strftime("%Y-%m-%d")
+            daily[key] += amt
 
-        daily = defaultdict(float)
+    if not daily:
+        return {"summary": "no valid timestamps"}
 
-        # Extract monthly → daily data
-        for month_name, tx_array in doc["months"].items():
-            for t in tx_array:
-                ts = parse_ts(t.get("timestamp"))
-                if not ts:
-                    continue
+    # sort by date
+    dates = sorted(daily.keys())
+    y = np.array([daily[d] for d in dates])
+    x = np.arange(len(y))
 
-                amount = float(t.get("amount", 0))
-                key = ts.strftime("%Y-%m-%d")
-                daily[key] += abs(amount)
+    slope, intercept = safe_polyfit(x, y)
+    last = y[-1]
 
-        if not daily:
-            return {
-                "summary": "no valid timestamps",
-                "trend": "unknown",
-                "next_month_total": 0
-            }
+    next_month = sum(last + slope * i for i in range(30))
 
-        # Sort & Prepare arrays
-        dates = sorted(daily.keys())
-        y = np.array([daily[d] for d in dates])
-        x = np.arange(len(y))
-
-        slope, intercept = safe_polyfit(x, y)
-
-        trend = (
-            "UPWARD" if slope > 0 else
-            "DOWNWARD" if slope < 0 else
-            "STABLE"
-        )
-
-        last_day = y[-1]
-        next_30 = sum(last_day + slope * i for i in range(1, 31))
-
-        return {
-            "summary": "ok",
-            "trend": trend,
-            "next_month_total": float(round(next_30, 2)),
-            "daily_points": [
-                {"date": d, "value": float(daily[d])}
-                for d in dates
-            ],
-            "slope": float(round(slope, 4)),
-            "last_value": float(last_day),
-        }
-
-    except Exception as e:
-        return {"error": str(e)}
+    return {
+        "summary": "ok",
+        "next_month_total": round(float(next_month), 2),
+        "three_month_projection": round(float(next_month * 3), 2),
+        "year_projection": round(float(next_month * 12), 2),
+        "five_year_projection": round(float(next_month * 60), 2),
+        "ten_year_projection": round(float(next_month * 120), 2),
+        "trend": "UPWARD" if slope > 0 else "DOWNWARD" if slope < 0 else "STABLE",
+        "daily_points": [{"date": d, "value": float(daily[d])} for d in dates]
+    }
