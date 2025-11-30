@@ -1,6 +1,7 @@
 # agent/agents/insights_agent.py
 
-from api.src.routes.forecast_route import compute_forecast
+from api.src.routes.forecast_route import compute as compute_forecast
+
 from agent.agents.savings_analyzer_agent import savings_analyzer_agent
 from agent.agents.investment_agent import investment_agent
 from agent.agents.analyst_agent import analyst_agent

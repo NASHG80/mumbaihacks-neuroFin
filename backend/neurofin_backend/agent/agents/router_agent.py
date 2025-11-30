@@ -1,311 +1,151 @@
 import re
 import requests
 
-from agents.planner_agent import planner_agent
-from api.src.memory import (
-    get_user_profile,
-    update_user_profile,
-    get_goals,
-    add_goal,
-    get_spending_pattern,
-    fix_json
-)
+# agent/agents/router_agent.py
 
-from agents.analyst_agent import analyst_agent
-from agents.forecast_agent import forecast_agent
-from agent.agents.advisor_agent import advisor_agent
-from agents.risk_agent import risk_agent
-from agents.classifier_agent import classifier_agent
-from agents.llm import call_llm
+from agent.agents.planner_agent import planner_agent
+from agent.agents.analyst_agent import analyst_agent
+from agent.agents.forecast_agent import forecast_agent
+from agent.agents.classifier_agent import classifier_agent
+from agent.agents.llm import call_llm
+from agent.agents.risk_agent import risk_agent
+from agent.agents.investment_agent import investment_agent
+from agent.agents.savings_analyzer_agent import savings_analyzer_agent
+from agent.agents.automation_agent import automation_agent
 
-from agents.investment_agent import investment_agent
-from agents.savings_analyzer_agent import savings_analyzer_agent
-from agents.automation_agent import automation_agent
-
-
-# ---------------------------------------------------
-# ⭐ NANDA TAX AGENT
-# ---------------------------------------------------
-def nanda_tax_agent(message: str):
-    try:
-        res = requests.post(
-            "http://localhost:7000/a2a",
-            json={"input": message}
-        )
-        data = res.json()
-        return data.get("output_text", "⚠️ Nanda didn't return any response.")
-    except Exception as e:
-        return f"❌ Nanda error: {str(e)}"
-
-
-# ---------------------------------------------------
-# ⭐ INTENT DETECTION
-# ---------------------------------------------------
-def detect_intent(message: str):
+# ----------------------------------------------------
+# INTENT DETECTION
+# ----------------------------------------------------
+def detect_intent(message):
     q = message.lower()
 
-    # TAX BOT
-    if any(w in q for w in ["tax", "80c", "80d", "80ccd", "regime", "nanda"]):
-        return "NANDA_TAX"
-
-    # FORECASTING INTENT
-    if any(w in q for w in [
-        "forecast", "predict", "projection", "future",
-        "next month", "next year", "10 years",
-        "spending forecast", "cashflow", "expense forecast"
-    ]):
+    if any(w in q for w in ["forecast", "next month", "projection", "future"]):
         return "FORECAST"
 
-    # SPENDING ANALYSIS
-    if any(w in q for w in ["analysis", "breakdown", "review spending"]):
-        return "ANALYZE_SPENDING"
-
-    # SAVINGS
-    if any(w in q for w in ["save", "saving", "improve savings"]):
+    if any(w in q for w in ["saving", "save more", "savings rate"]):
         return "ANALYZE_SAVINGS"
 
-    # INVESTMENT
-    if any(w in q for w in ["invest", "investment", "portfolio", "sip"]):
+    if any(w in q for w in ["invest", "portfolio", "mutual fund", "stock"]):
         return "INVESTMENT_ADVICE"
 
-    # AUTOMATION
-    if "automation" in q:
-        return "AUTOMATION_HELP"
-
-    # RISK
     if "risk" in q:
         return "RISK_CHECK"
+
+    if any(w in q for w in ["spending", "analysis", "expenses"]):
+        return "ANALYZE_SPENDING"
 
     return "WEEKLY_SUMMARY"
 
 
-# ---------------------------------------------------
-# ⭐ MAIN ROUTER
-# ---------------------------------------------------
-def router_agent(user_id: str, message: str):
+# ----------------------------------------------------
+# ROUTER AGENT (MAIN LOGIC)
+# ----------------------------------------------------
+def router_agent(user_id, message):
     intent = detect_intent(message)
 
-    analyst = analyst_agent(user_id)
-    forecast_data = forecast_agent(user_id)
-    risk = risk_agent(user_id)
+    # Call supporting agents
+    analyst_data = analyst_agent(user_id)
+    forecast_data = forecast_agent(user_id)          # FIX ✔ expects user_id only
+    risk_data = risk_agent(user_id)
+    investment_data = investment_agent(user_id)
+    savings_data = savings_analyzer_agent(user_id)
 
-    # -----------------------------------------------
-    # 1️⃣ NANDA TAX
-    # -----------------------------------------------
-    if intent == "NANDA_TAX":
-        return fix_json({
-            "intent": "NANDA_TAX",
-            "answer": nanda_tax_agent(message)
-        })
-
-
-    # -----------------------------------------------
-    # 2️⃣ ⭐ ADVANCED FORECAST BLOCK (FINAL)
-    # -----------------------------------------------
+    # ------------------------------------------------
+    # FORECAST
+    # ------------------------------------------------
     if intent == "FORECAST":
-        fore = forecast_data
-
         prompt = f"""
-You are a senior financial forecasting expert for Indian users.
+Generate a clear, simple financial forecast based on this data:
 
-Below is the raw forecast data:
-{fore}
+{forecast_data}
 
-Write a fully structured forecast narrative with the following sections:
-
-1) Short-Term Forecast (Next 7 Days)
-   - Expected daily spending pattern
-   - Highest-risk day
-   - Short-term cashflow movement
-
-2) Next Month Forecast
-   - Expected spending total for the month (₹)
-   - Trend direction (upward / downward / stable)
-   - Category-wise spending prediction (₹)
-   - Expected spikes (food, transport, shopping, bills)
-
-3) 3-Month Projection
-   - Total expected spending next 3 months
-   - Savings probability
-   - Expected category inflation
-   - Subscription burn estimate
-
-4) One-Year Projection
-   - Expected annual spend (₹)
-   - Lifestyle creep impact
-   - Festival & travel seasonality
-   - Overspending risk
-   - Savings rate movement
-
-5) Five-Year & Ten-Year Outlook
-   - Long-term expense trajectory
-   - Financial stability vs debt-risk
-   - Inflation-adjusted impact
-   - Net-worth projection (basic)
-
-6) Category-Wise Future Forecast
-   - Fastest growing categories
-   - Stable categories
-   - High-risk categories
-   - Provide numbers (₹)
-
-7) Subscription & EMI Forecast
-   - Annual subscription estimate (₹)
-   - EMI stress months
-   - Recurring charge risks
-
-8) Habit-Based Predictions
-   - Weekend vs weekday patterns
-   - End-of-month spikes
-   - Late-night spending risks
-   - Unusual patterns
-
-9) Runway & Burn Rate
-   - Daily burn rate (₹)
-   - Days until balance may run out
-   - Burn pattern: healthy/unhealthy
-
-10) Risk Index (0–100)
-    - Meaning of score
-    - Overspending probability
-    - High-risk categories
-    - Cashflow pressure
-
-11) Alerts & Warnings
-    - Critical upcoming risks
-    - Subscription renewals
-    - Merchant patterns
-
-12) Actionable Recommendations
-    - Budget adjustments
-    - Category caps
-    - Behaviour improvements
-    - 2 automation rules
-    - Ideal savings target
-
-Rules:
-- Do NOT use hashtags.
-- Use clean headings and bullet points.
-- Must use ₹ currency.
+Return:
+- 30-day summary
+- Trend interpretation
+- Risks
+- One actionable recommendation
 """
+        return {"answer": call_llm(prompt)}
 
-        reply = call_llm(prompt)
-
-        return fix_json({
-            "intent": "FORECAST",
-            "forecast_raw": fore,
-            "answer": reply
-        })
-
-
-    # -----------------------------------------------
-    # 3️⃣ SPENDING ANALYSIS
-    # -----------------------------------------------
+    # ------------------------------------------------
+    # SPENDING ANALYSIS
+    # ------------------------------------------------
     if intent == "ANALYZE_SPENDING":
         prompt = f"""
-Spending Breakdown Report
-
-Weekly breakdown:
-{analyst['weekly']}
-
-Highest categories:
-{analyst['top_spends']}
-
-Merchant summary:
-{analyst['merchant_summary']}
+User spending data:
+{analyst_data}
 
 Write:
-- 5 insights
-- 3 problem areas
-- 3 improvement suggestions
+- 4 insights
+- 3 improvements
+- Spending risk score
 """
-        return fix_json({
-            "intent": "ANALYZE_SPENDING",
-            "answer": call_llm(prompt)
-        })
+        return {"answer": call_llm(prompt)}
 
-
-    # -----------------------------------------------
-    # 4️⃣ SAVINGS ANALYSIS
-    # -----------------------------------------------
+    # ------------------------------------------------
+    # SAVINGS ANALYSIS
+    # ------------------------------------------------
     if intent == "ANALYZE_SAVINGS":
-        savings = savings_analyzer_agent(user_id)
         prompt = f"""
-Savings report:
-{savings}
+Savings profile:
+{savings_data}
 
-Write:
-- Savings health score
-- Whether savings rate is healthy
-- What drains savings
-- 4 practical improvement steps
+Explain:
+- Savings health
+- How much user should ideally save
+- 3 improvement strategies
 """
-        return fix_json({
-            "intent": "ANALYZE_SAVINGS",
-            "answer": call_llm(prompt)
-        })
+        return {"answer": call_llm(prompt)}
 
-
-    # -----------------------------------------------
-    # 5️⃣ INVESTMENT ADVICE
-    # -----------------------------------------------
+    # ------------------------------------------------
+    # INVESTMENT ADVICE
+    # ------------------------------------------------
     if intent == "INVESTMENT_ADVICE":
-        inv = investment_agent(user_id)
         prompt = f"""
-Investment report:
-{inv}
+Investment profile:
+{investment_data}
 
 Write:
-- Suggested investment plan
-- Portfolio reasoning
-- SIP guidance
-- Short-term vs long-term strategy
+- Ideal portfolio allocation
+- 3 safe options
+- 3 growth options
+- Risk score
 """
-        return fix_json({
-            "intent": "INVESTMENT_ADVICE",
-            "answer": call_llm(prompt)
-        })
+        return {"answer": call_llm(prompt)}
 
-
-    # -----------------------------------------------
-    # 6️⃣ RISK REPORT
-    # -----------------------------------------------
+    # ------------------------------------------------
+    # RISK CHECK
+    # ------------------------------------------------
     if intent == "RISK_CHECK":
         prompt = f"""
 Risk data:
-{risk}
+{risk_data}
 
-Write:
-- Overspending risks
-- Burn-rate risk
-- Category vulnerabilities
-- 5 prevention steps
+Explain:
+- Major risk factors
+- Probability of financial instability
+- Fixes the user should apply immediately
 """
-        return fix_json({
-            "intent": "RISK_CHECK",
-            "answer": call_llm(prompt)
-        })
+        return {"answer": call_llm(prompt)}
 
-
-    # -----------------------------------------------
-    # 7️⃣ WEEKLY SUMMARY (DEFAULT)
-    # -----------------------------------------------
+    # ------------------------------------------------
+    # DEFAULT → WEEKLY SUMMARY
+    # ------------------------------------------------
     summary_prompt = f"""
-Weekly Summary
+Create a weekly summary using:
 
-Total spent: ₹{analyst['total_spent']}
-Daily average: ₹{analyst['daily_avg']}
-Top categories: {analyst['top_spends']}
-Forecast summary: {forecast_data['summary']}
-Risk alerts: {risk['issues']}
+Spending Analysis:
+{analyst_data}
+
+Risk Profile:
+{risk_data}
+
+Forecast:
+{forecast_data}
 
 Write:
-- Full weekly summary
-- High & low spending days
-- Category insights
-- 3 recommendations
+- 3 key insights
+- Current financial score (0–100)
+- 3 fixes for next week
 """
-    return fix_json({
-        "intent": "WEEKLY_SUMMARY",
-        "answer": call_llm(summary_prompt)
-    })
+    return {"answer": call_llm(summary_prompt)}
